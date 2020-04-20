@@ -17,8 +17,10 @@ void init(void)
         }
 }
 
+//전체 문제를 부분 문제로 나누어서 해결
 int path(int y, int x)
 {
+    //기저사례:마지막 라인에 도달한 경우
     if(y==n-1)
         return map[y][x];
     
