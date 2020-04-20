@@ -1,3 +1,2 @@
 # algoritm-algospot
- This is solution to algospot.com.
- I share it and want feedback.
+안녕하세요. 여기에는 제가 종만북을 공부하며 알게된 코드와 제가 작성한 코드, 이해하기 어려웠던 부분, 중요 핵심 내용을 게시하고 있습니다.
