@@ -8,6 +8,7 @@ const int INF=987654321;
 string pi;
 int cache[10002];
 
+//효율성보다 구현의 용이성과 간결함에 초점을 둔다.
 int classify(int start, int end)
 {
     string str=pi.substr(start,end-start+1);
