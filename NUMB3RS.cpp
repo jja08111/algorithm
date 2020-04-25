@@ -25,9 +25,9 @@ void init(void)
     }
 }
 
-//탐색의 핵심은 탐색 방햑을 prison에서 경로의 끝이 아닌 
-//경로의 끝부터 prison으로 가는 방향을 탐색해
-//수행시간을 단축할 수 있다.
+//탐색의 핵심은 탐색 방향을 prison에서 경로의 끝이 아닌 
+//경로의 끝부터 prison으로 가는 방향을 탐색하는 것 이다.
+//이를 통해 수행시간을 O(n²dt)에서 O(n²d)로 단축할 수 있다.
 double solve(int here, int days)
 {
     if(days==0)
