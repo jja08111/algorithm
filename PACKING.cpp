@@ -18,7 +18,7 @@ void init(void)
         cin>>name[i]>>volume[i]>>need[i];
 }
 
-//item을 선택하거나 하지 않는 2가지 방법을 이용해 최대 절박도합을 반환
+//item을 선택하거나 하지 않는 2가지 방법을 이용해 최대 '절박도'합을 반환
 int pack(int capacity, int item)
 {
     if(item==n)
@@ -51,7 +51,7 @@ void reconstruct(int capacity, int item, vector<string>& picked)
 
 /*
 // 직접 만드려고 했던 코드이지만 반복문 부분에서 연속적으로 선택되며
-// 현재 아이템을 포함하지만 용량에서는 제외하는 문제(?)가 있는 오류가 있다.
+// 현재 아이템을 포함하지만 용량에서는 제외하는 오류가 있다.
 int getMaxNecessity(int start, int capacity)
 {
     int& ret=cache[start+1][capacity];
