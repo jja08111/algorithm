@@ -12,3 +12,38 @@
 // P(R|Q)는 원문이 Q일때 분류기가 R을 반환할 확률이니 M값을 이용하여 구할 수 있다.
 //  (i=0~n-1)πM(Q[i],R[i])  
 // M(a,b)는 a를 b로 분류할 확률이다.
+#include <iostream>
+#include <vector>
+#include <cstring>
+using namespace std;
+
+int n,m;
+int R[100];
+double T[501][501];
+double M[501][501];
+int choice[102][502];
+double cache[102][502];
+
+double recognize(int segment, int previousMatch)
+{
+    if(segment==n)
+        return 0;
+    
+    double& ret=cache[segment][previousMatch];
+    if(ret!=1.0)
+        return ret;
+    
+    ret=-1e200;
+    int& choose=choice[segment][previousMatch];
+    
+    for(int thisMatch=0;thisMatch<m;++thisMatch)
+    {
+        double cand=T[previousMatch][thisMatch]+M[thisMatch][R[segment]]+recognize(segment+1,thisMatch);
+        if(ret<cand)
+        {
+            ret=cand;
+            choose=thisMatch;
+        }
+    }
+    return ret;
+}
