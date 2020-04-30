@@ -38,7 +38,7 @@ double shortestPath(int here, int visited)
     ret=INF;
     for(int next=0;next<n;++next)
     {
-        다음위치가 이미 방문한 경우
+        //다음위치가 이미 방문한 경우
         if(visited & (1<<next))
             continue;
         double cand=dist[here][next]+shortestPath(next,visited+(1<<next));
