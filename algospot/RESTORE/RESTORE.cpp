@@ -43,7 +43,7 @@ void init(void)
 		bool removed=false;
 		for (int i=0;i<k && !removed;i++) 
 			for (int j=0;j<k;j++) 
-			    //j문자가 i문자에 속할 경우
+				//j문자가 i문자에 속할 경우
 				if (i!=j && word[i].find(word[j])!=-1) 
 				{
 					//맨끝의 문자를 j에 넣는다.
@@ -53,7 +53,7 @@ void init(void)
 					removed=true;
 				}
 		if (!removed) break;
-	}
+    }
     word[k]="";
     
     for(int i=0;i<=k;++i)
