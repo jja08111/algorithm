@@ -24,6 +24,7 @@ int getOverlapSize(const string& a, const string& b)
 {
     int len;
     for(len=min(a.size(),b.size());len>0;len--)
+        //a의 오른쪽 부분과 b의 왼쪽 부분을 비교하며 일치하면 일치하는 크기를 반환
         if(a.substr(a.size()-len)==b.substr(0,len))
             return len;
     return 0;
@@ -42,9 +43,12 @@ void init(void)
 		bool removed=false;
 		for (int i=0;i<k && !removed;i++) 
 			for (int j=0;j<k;j++) 
+			    //j문자가 i문자에 속할 경우
 				if (i!=j && word[i].find(word[j])!=-1) 
 				{
+					//맨끝의 문자를 j에 넣는다.
 					word[j]=word[k-1];
+					//범위를 1줄인다.
 					k--;
 					removed=true;
 				}
@@ -70,6 +74,7 @@ int restore(int last, int used)
     for(int next=0;next<k;++next)
         if((used&(1<<next))==0)
         {
+            //겹치는 부분이 최대가 되도록 한다.
             int cand=overlap[last][next]+restore(next,used+(1<<next));
             ret=max(ret,cand);
         }
@@ -84,16 +89,18 @@ string reconstruct(int last, int used)
     
     for(int next=0;next<k;++next)
     {
+        //next가 이미 사용된 경우는 예외
         if(used&(1<<next))
             continue;
         
+        //next를 사용했을때 최적해인 경우 next를 사용한다.
         int ifUsed=restore(next,used+(1<<next))+overlap[last][next];
         
         if(restore(last,used)==ifUsed)
             return (word[next].substr(overlap[last][next]) + reconstruct(next,used+(1<<next)));
     }
     
-    return "error";
+    return "error!";
 }
 
 int main(void)
