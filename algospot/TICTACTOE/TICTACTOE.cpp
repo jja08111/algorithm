@@ -77,6 +77,7 @@ int bijection(const vector<string>& board)
     return ret;
 }
 
+//현재차례의 사람이 이기면 1, 비기면 0, 지면 -1을 반환한다.
 int canWin(vector<string>& board, char turn)
 {
     //마지막에 상대가 둬서 한 줄이 만들어진 경우
