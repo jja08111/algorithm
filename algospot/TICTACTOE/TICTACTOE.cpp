@@ -1,13 +1,33 @@
-// 주의!!!!!!
-// 이 코드는 미완성 코드입니다.
-
 #include <iostream>
 #include <cstring>
 #include <vector>
 #include <algorithm>
 using namespace std;
 
-int cache[19683];
+const int MAX=19683;
+int cache[MAX];
+
+char getTurn(const vector<string>& board)
+{
+    int emptyCell=0;
+
+    for(int y=0;y<3;++y)
+        for(int x=0;x<3;++x)
+            if(board[y][x]=='.')
+                ++emptyCell;
+    
+    return emptyCell%2 ? 'x' : 'o';
+}
+
+void init(vector<string>& board, char& turn)
+{
+    for(int i=0;i<MAX;++i)
+        cache[i]=-2;
+    for(int i=0;i<3;++i)
+        cin>>board[i];
+    
+    turn=getTurn(board);
+}
 
 bool isFinished(const vector<string>& board, char turn)
 {
@@ -82,7 +102,7 @@ int canWin(vector<string>& board, char turn)
         return ret=0;
     
     //상대가 지면 내가 이기고, 상대가 이기면 내가 진것이다.
-    return ret= -minValue;
+    return ret = -minValue;
 }
 
 int main(void)
@@ -91,7 +111,20 @@ int main(void)
     
     while(testCase--)
     {
+        vector<string> board(3);
+        char turn;
         
+        init(board, turn);
+        
+        switch(canWin(board,turn))
+        {
+            case -1:
+                cout<<(char)('x'+'o'-turn)<<endl; break;
+            case 0:
+                cout<<"TIE"<<endl; break;
+            case 1:
+                cout<<turn<<endl; break;
+        }
     }
 
     return 0;
