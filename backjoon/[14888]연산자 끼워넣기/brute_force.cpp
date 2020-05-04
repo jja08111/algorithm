@@ -28,17 +28,17 @@ int calcUsingOperator(int frontRet, int index, int operatorIdx)
     return ret;
 }
 
-int getMaxOrMinRet(int begin, bool needMax)
+int getMaxOrMinRet(int end, bool needMax)
 {
-    if(begin==0)
-        return num[begin];
+    if(end==0)
+        return num[end];
     
     int ret=INF*(needMax ? -1 : 1);
     for(int i=0;i<4;++i)
         if(operationsNum[i]>0)
         {
             --operationsNum[i];
-            int candidate=calcUsingOperator(getMaxOrMinRet(begin-1,needMax),begin,i);
+            int candidate=calcUsingOperator(getMaxOrMinRet(end-1,needMax),end,i);
             ret=needMax ? max(ret,candidate) : min(ret,candidate);
             ++operationsNum[i];
         }
