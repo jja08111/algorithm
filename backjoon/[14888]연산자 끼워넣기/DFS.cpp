@@ -12,7 +12,7 @@ void dfs(int index, int sum)
 	if (index == n) 
 	{
 		maxRet = max(maxRet, sum);
-		minRet = min(minRet, sum);
+		minRet = min(minRet, sum); 
 	}
 	
 	for(int i=0;i<4;++i)
