@@ -24,7 +24,7 @@ void dfs(int index, int sum)
                 case 0: dfs(index+1,sum+number[index]); break;
                 case 1: dfs(index+1,sum-number[index]); break;
                 case 2: dfs(index+1,sum*number[index]); break;
-            case 3: dfs(index+1,sum/number[index]); break;
+            	case 3: dfs(index+1,sum/number[index]); break;
             }
             ++operators[i];
         }
