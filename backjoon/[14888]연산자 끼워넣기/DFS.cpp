@@ -1,42 +1,45 @@
-//코드 작성자 : https://parkssiss.tistory.com/126
-//
-//
 #include<iostream>
 #include<algorithm>
 using namespace std;
 
-const int MAX = 1000000001;
-int n;
-int number[12];
-int operators[4];
-int maxans = -MAX;
-int minans = MAX;
+const int INF = 987654321;
+int n,number[11],operators[4];
+int maxRet = -INF;
+int minRet = INF;
 
-void dfs(int plus, int minus, int mul, int div, int count, int sum) {
-	if (count == n) {
-		maxans = max(maxans, sum);
-		minans = min(minans, sum);
+void dfs(int index, int sum) 
+{
+	if (index == n) 
+	{
+		maxRet = max(maxRet, sum);
+		minRet = min(minRet, sum);
 	}
-	if (plus > 0)
-		dfs(plus - 1, minus, mul, div, count + 1, sum + number[count]);
-	if (minus > 0)
-		dfs(plus, minus - 1, mul, div, count + 1, sum - number[count]);
-	if (mul > 0)
-		dfs(plus, minus, mul - 1, div, count + 1, sum * number[count]);
-	if (div > 0)
-		dfs(plus, minus, mul, div - 1, count + 1, sum / number[count]);
+	
+	for(int i=0;i<4;++i)
+	    if(operators[i]>0)
+	    {
+	        --operators[i];
+	        switch(i)
+	        {
+	            case 0: dfs(index+1,sum+number[index]); break;
+	            case 1: dfs(index+1,sum-number[index]); break;
+	            case 2: dfs(index+1,sum*number[index]); break;
+	            case 3: dfs(index+1,sum/number[index]); break;
+	        }
+	        ++operators[i];
+	    }
 }
 
-int main(void) {
+int main(void)
+{
 	cin >> n;
-	for (int i = 0; i < n; i ++) {
+	for (int i = 0; i < n; i ++)
 		cin >> number[i];
-	}
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 4; i++)
 		cin >> operators[i];
-	}
-	dfs(operators[0], operators[1], operators[2], operators[3], 1, number[0]);
-	cout << maxans << endl;
-	cout << minans << endl;
+		
+	dfs(1, number[0]);
+	cout << maxRet << endl;
+	cout << minRet << endl;
 	return 0;
 }
