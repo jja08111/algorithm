@@ -28,36 +28,18 @@ int calcUsingOperator(int frontRet, int index, int operatorIdx)
     return ret;
 }
 
-int getMaxRet(int begin)
+int getMaxOrMinRet(int begin, bool needMax)
 {
     if(begin==0)
         return num[begin];
     
-    int ret=INF*-1;
+    int ret=INF*(needMax ? -1 : 1);
     for(int i=0;i<4;++i)
         if(operationsNum[i]>0)
         {
             --operationsNum[i];
-            int candidate=calcUsingOperator(getMaxRet(begin-1),begin,i);
-            ret=max(ret,candidate);
-            ++operationsNum[i];
-        }
-    
-    return ret;
-}
-
-int getMinRet(int begin)
-{
-    if(begin==0)
-        return num[begin];
-    
-    int ret=INF;
-    for(int i=0;i<4;++i)
-        if(operationsNum[i]>0)
-        {
-            --operationsNum[i];
-            int candidate=calcUsingOperator(getMinRet(begin-1),begin,i);
-            ret=min(ret,candidate);
+            int candidate=calcUsingOperator(getMaxOrMinRet(begin-1,needMax),begin,i);
+            ret=needMax ? max(ret,candidate) : min(ret,candidate);
             ++operationsNum[i];
         }
     
@@ -68,5 +50,5 @@ int main(void)
 {
     init();
     
-    cout<<getMaxRet(n-1)<<endl<<getMinRet(n-1);
+    cout<<getMaxOrMinRet(n-1,true)<<endl<<getMaxOrMinRet(n-1,false);
 }
