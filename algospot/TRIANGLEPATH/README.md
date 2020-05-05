@@ -43,3 +43,21 @@ int iterative(void)
     return cache[0][0];
 }
 ```
+슬라이딩 윈도(sliding window)기법을 이용하여 공간복잡도를 줄일 수 있다.
+
+슬라이딩 윈도는 새 값을 계산할 때 과거에 계산한 결과가 전부 필요한 것이 아니라 일부분일때 이용 가능하다.
+
+2줄에 저장해 한줄씩 옮겨가며 결과를 구한다.
+```c++
+int iterative(void)
+{
+    for(int i=0;i<n;++i)
+        cache[(n-1)%2][i]=map[n-1][i];
+    
+    for(int y=n-2;y>=0;--y)
+        for(int x=0;x<y+1;++x)
+            cache[y%2][x]=max(cache[(y+1)%2][x],cache[(y+1)%2][x+1])+map[y][x];
+
+    return cache[0][0];
+}
+```
