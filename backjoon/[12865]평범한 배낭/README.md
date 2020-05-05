@@ -27,3 +27,6 @@ int getMaxValue(int here, int remain)
     return ret;
 }
 ```
+# 회고
+기저사례를 remain이 0이었을때로 잘못 설정해 런타임에러를 만들었다.  
+남은 무게보다 현재 가방의 무게가 높으면 고르지 않기 때문에 기저사례가 here==n이라는 것을 생각하게 되었다. 
