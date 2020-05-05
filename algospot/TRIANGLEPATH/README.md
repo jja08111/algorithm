@@ -49,6 +49,7 @@ int iterative(void)
 
 2줄에 저장해 한줄씩 옮겨가며 결과를 구한다.
 ```c++
+int cache[2][100];
 int iterative(void)
 {
     for(int i=0;i<n;++i)
