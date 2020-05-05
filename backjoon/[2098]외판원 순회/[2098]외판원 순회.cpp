@@ -43,4 +43,6 @@ int main(void)
     
     //첫위치로 다시 돌아오게 되므로 첫위치만 탐색해도 결과가 나온다.
     cout<<getMinCost(0,1)<<endl;
+    
+    return 0;
 }
