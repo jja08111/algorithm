@@ -51,4 +51,6 @@ int main(void)
     init();
     
     cout<<getMaxOrMinRet(n-1,true)<<endl<<getMaxOrMinRet(n-1,false);
+    
+    return 0;
 }
