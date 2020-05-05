@@ -60,7 +60,7 @@ char play(int board)
     for(int i=0;i<moves.size();++i)
         // 배치가능할때
         if((board & moves[i]) == 0)
-            // 상대가 이길 수 없으면 이긴 것이다.
+            // 상대가 이길 수 없으면 내가 이긴 것이다.
             if(!play(board | moves[i]))
             {
                 ret=1;
