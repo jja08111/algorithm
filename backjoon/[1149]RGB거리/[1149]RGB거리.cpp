@@ -27,7 +27,7 @@ int getMinSum(int here, int previousColor)
     
     ret=INF;
     for(int color=0;color<3;++color)
-        // 첫순서의 집이거나 앞의 집과 현재 집의 색상이 다를 
+        // 첫번째 집이거나 앞의 집과 현재 집의 색상이 다를 
         if(here==0 || previousColor!=color)
             ret=min(ret,cost[here][color]+getMinSum(here+1,color));
     
