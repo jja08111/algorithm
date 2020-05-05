@@ -4,7 +4,7 @@ using namespace std;
 
 const int INF=987654321;
 int n,cost[1001][3];
-int cache[1001][4];
+int cache[1001][3];
 
 void init(void)
 {
@@ -27,7 +27,8 @@ int getMinSum(int here, int previousColor)
     
     ret=INF;
     for(int color=0;color<3;++color)
-        if(previousColor!=color)
+        // 처음 집이거나 앞의 집과 현재 집의 색상이 다를 
+        if(here==0 || previousColor!=color)
             ret=min(ret,cost[here][color]+getMinSum(here+1,color));
     
     return ret;
@@ -37,7 +38,7 @@ int main(void)
 {
     init();
     
-    cout<<getMinSum(0,3);
+    cout<<getMinSum(0,0);
     
     return 0;
 }
