@@ -28,7 +28,6 @@ int path(int y, int x)
 
 재귀함수보다는 비직관적이다.
 
-하지만 코드는 더욱 깔끔한것 같다.
 ```c++
 int iterative(void)
 {
