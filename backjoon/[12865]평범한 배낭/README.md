@@ -30,10 +30,11 @@ int getMaxValue(int here, int remain)
 ```
 ### 반복문 이용
 점화식을 이용하여 반복문을 통해 구현할 수 있다.  
-이를 이용하면 속도와 공간 모두 잡을 수 있다.
+이를 이용하면 속도와 공간 모두 잡을 수 있다.  
+- cache[a]=b : a무게만큼 넣었을때 b가 가치의 최대이다.
 ```c++
-for (int j = k; j >= w; j--) {
-	dp[j] = max(dp[j], dp[j - w]+v);
+for(int j=limit;j>=weight[i];--j)
+	cache[j]=max(cache[j],cache[j-weight[i]]+value[i]);
 }
 ```
 
