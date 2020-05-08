@@ -1,28 +1,22 @@
-// 출처 : https://www.acmicpc.net/user/wlsth1004100
-
-#include<cstdio>
-#include<algorithm>
-#include<string.h>
-#include<vector>
+#include <iostream>
 
 using namespace std;
 
-const int MAX_N = 100;
-const int MAX_W = 100010;
-
-int dp[100];
-int N, K;
-pair<int,int> item[100001];
-int main()
+int main(void)
 {
-	scanf("%d %d", &N, &K);
-	for (int i = 0; i < N; i++) {
-		scanf("%d %d", &item[i].first, &item[i].second);
-
-		for (int j = K; j >= item[i].first; j--)
-			dp[j] = max(dp[j], dp[j - item[i].first] + item[i].second);
-	}
-
-	printf("%d", dp[K]);
-	return 0;
+    int n,limit,weight[100],value[100];
+    // index : 남은 무게, value : 가치의 합
+    int cache[100001]={0,};
+    
+    cin>>n>>limit;
+    for(int i=0;i<n;++i)
+    {
+        cin>>weight[i]>>value[i];
+        for(int j=limit;j>=weight[i];--j)
+            cache[j]=max(cache[j],cache[j-weight[i]]+value[i]);
+    }
+    
+    cout<<cache[limit];
+    
+    return 0;
 }
