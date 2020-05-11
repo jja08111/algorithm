@@ -23,6 +23,7 @@ void init(void)
 
 double getProb(int passedTime, int here)
 {
+    //기저사례: 처음 곡이 0번 곡이고 지나간 시간이 0이어야 한다.
     if(passedTime==0 && here==0)
         return 1;
     
@@ -31,6 +32,7 @@ double getProb(int passedTime, int here)
         return ret;
     
     ret=0;
+    //time-len[prev]분에 prev번 노래가 재생을 시작해야 하고, 이 노래가 종료한 후 here노래가 시작된다.
     for(int prev=0;prev<n;++prev)
         if(passedTime>=len[prev])
             ret+=getProb(passedTime-len[prev],prev)*adj[prev][here];
