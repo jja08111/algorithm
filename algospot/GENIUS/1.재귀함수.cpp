@@ -52,6 +52,7 @@ int main(void)
             cin>>song;
             
             double ret=0;
+            //노래가 시작할때의 확률이 아닌 재생되고 있는지에 대한 확률이니 k-len[song]+1만큼 앞까지 합한다.
             for(int j=0;j<len[song];++j)
                 ret+=getProb(k-j,song);
             printf("%.10lf ",ret);
