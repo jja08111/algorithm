@@ -1,4 +1,3 @@
-/* 완성되지 않은 
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -23,7 +22,7 @@ vector<double> getProb(void)
     //sliding window기법 사용
     double c[5][50];
     memset(c,0,sizeof(c));
-    c[0][0];
+    c[0][0]=1.0;
     for(int passedTime=1;passedTime<=k;++passedTime)
         for(int song=0;song<n;++song)
         {
@@ -61,4 +60,3 @@ int main(void)
 
     return 0;
 }
-*/
