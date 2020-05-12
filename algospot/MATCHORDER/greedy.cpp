@@ -43,6 +43,6 @@ int main(void)
         for(int i=0;i<n;++i)
             cin>>korean[i];
         
-        cout<<order<<endl;
+        cout<<order(russian,korean)<<endl;
     }
 }
