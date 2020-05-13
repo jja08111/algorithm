@@ -28,3 +28,6 @@ for(int i=0;i<n;++i)
     ret=max(ret,beginEat+eat[box]);
 }
 ```
+
+# 회고
+음수를 취해서 손쉽게 내림차순정렬을 구현한 것이 인상적이었다.
