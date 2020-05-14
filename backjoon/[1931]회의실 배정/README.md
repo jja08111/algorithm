@@ -10,6 +10,7 @@
 주의할 점은 습관처럼 <>안에 int로 오인하여 작성하지 말아야 한다.  
 ```c++
 typedef pair<int,int> Pair;
+// pq는 (end,start)로 초기화 되어있다.
 int solve(priority_queue<Pair,vector<Pair>,greater<Pair> >& pq)
 {
     int ret=0, prevEnd=0;
