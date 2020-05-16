@@ -3,20 +3,24 @@
 #include <algorithm>
 #include <map>
 #include <bitset>
+using namespace std;
 
 const double INF=1e200;
 const int MAX=20;
 const int CACHE_DEPTH=5;
 
+// 각 정점마다 다른 정점들을 가까운 순서대로 정렬
 vector<int> nearest[MAX];
 // 간선의 길이, 간선의 두 정점
 vector<pair<double,pair<int,int> > > edges;
 double dist[MAX][MAX];
+// 각 도시에 인접한 간선중 가장 짧은 것을 미리 찾아둠
 double minEdge[MAX];
 map<int,double> cache[MAX][CACHE_DEPTH+1];
 int n;
 double best;
 
+// 상호 배타적 집합 자료구조 구현
 struct DisjointSet
 {
     int vilageNum, components;
@@ -54,33 +58,14 @@ struct DisjointSet
     }
 };
 
-
-double solve()
-{
-    edges.clear();
-    for(int i=0;i<n;++i)
-        for(int j=0;j<i;++j)
-            edges.push_back(make_pair(dist[i][j],make_pair(i,j)));
-    sort(edges.begin(),edges.end());
-    //생략
-}
-
-bool pathSwapPruning(const vector<int>& path)
-{
-    if(path.size()<4) return false;
-    int p=path[path.size()-4];
-    int a=path[path.size()-3];
-    int b=path[path.size()-2];
-    int q=path[path.size()-1];
-    return dist[p][a]+dist[b][q]
-}
-
 bool pathReversePruning(const vector<int>& path)
 {
-    if(path.size()<4) return false;
+    if(path.size()<3) 
+        return false;
+    
     int b=path[path.size()-2];
     int q=path[path.size()-1];
-    for(int i=0;i+3<path.size();++i)
+    for(int i=0;i+2<path.size();++i)
     {
         int p=path[i];
         int a=path[i+1];
@@ -90,7 +75,7 @@ bool pathReversePruning(const vector<int>& path)
     return false;
 }
 
-double mstHeuristic(int here, const vector<bool>& visited)
+double mstHeuristic(int here, int visited)
 {
     DisjointSet sets(n);
     double taken=0;
@@ -98,8 +83,8 @@ double mstHeuristic(int here, const vector<bool>& visited)
     {
         int a=edges[i].second.first;
         int b=edges[i].second.second;
-        if(a!=0 && a!=here && visited[a]) continue;
-        if(b!=0 && b!=here && visited[b]) continue;
+        if(a!=0 && a!=here && (visited&(1<<a))) continue;
+        if(b!=0 && b!=here && (visited&(1<<b))) continue;
         if(sets.merge(a,b))
             taken+=edges[i].first;
     }
@@ -109,7 +94,7 @@ double mstHeuristic(int here, const vector<bool>& visited)
 double dp(int here, int visited)
 {
     if(visited==(1<<n)-1)
-        return dist[here][0];
+        return 0.0;
     
     int remaining=n-__builtin_popcount(visited);
     double& ret=cache[here][remaining][visited];
@@ -146,7 +131,7 @@ void search(vector<int>& path, int visited, double currentLength)
     double ret=INF;
     for(int i=0;i<nearest[here].size();++i)
     {
-        int next=next[here][i];
+        int next=nearest[here][i];
         if(visited&(1<<next))
             continue;
         
@@ -178,10 +163,12 @@ double solve()
             edges.push_back(make_pair(dist[i][j],make_pair(i,j)));
     sort(edges.begin(),edges.end());
     
+    //cache 초기화
     for(int i=0;i<MAX;++i)
         for(int j=0;j<=CACHE_DEPTH;j++)
             cache[i][j].clear();
     
+    //모든 도시를 시작점으로 해본다.
     best=INF;
     for(int i=0;i<n;++i)
     {
