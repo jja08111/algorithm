@@ -4,15 +4,21 @@ TSP2.cpp 참고
 하지만 이 방법으로는 공간,시간복잡도가 커서 해결할 수 없다.
 
 ### 2. 현재까지 구한 최적해보다 나빠지면 그만두기
-   - 2-a. 그중에서 나머지 거리를 최단거리 간선들과 현재까지의 거리를 더한 값이 최적해보다 크면 그만두기(단순한 휴리스틱) 
+   - (남은 정점을 잇는 간선 중 최단거리 간선들을 더한 값 + 현재까지의 거리를 더한 값)이 최적해보다 크면 그만두기(단순한 휴리스틱) 
 ```c++
 double simpleHeuristic(vector<bool>& visited)
 {
     double ret=minEdge[0];
     for(int i=0;i<n;++i)
         if(!visited[i])
+            //minEdge[a]=b는 a정점과 연결된 제일 짧은 간선의 길이이다.
             ret+=minEdge[i];
     return ret;
+}
+void search(vector<int& path, vector<bool>& visited, double currentLength)
+{
+   if(best<=currentLength+simpleHeuristic(visited)) return;
+   // ...생략...
 }
 ```
 ### 3. 가까운 도시부터 방문하기  
