@@ -31,7 +31,7 @@ struct DisjointSet
         for(int i=0;i<vilageNum;++i)
         {
             parent[i]=i;
-            rank[i];
+            rank[i]=0;
         }
     }
     //here가 포함된 집합의 대표를 반환
@@ -53,19 +53,19 @@ struct DisjointSet
         parent[a]=b;
         if(rank[a]==rank[b])
             ++rank[b];
-        components--;
+        --components;
         return true;
     }
 };
 
 bool pathReversePruning(const vector<int>& path)
 {
-    if(path.size()<3) 
+    if(path.size()<4) 
         return false;
     
     int b=path[path.size()-2];
     int q=path[path.size()-1];
-    for(int i=0;i+2<path.size();++i)
+    for(int i=0;i+3<path.size();++i)
     {
         int p=path[i];
         int a=path[i+1];
@@ -79,12 +79,13 @@ double mstHeuristic(int here, int visited)
 {
     DisjointSet sets(n);
     double taken=0;
+    
     for(int i=0;i<edges.size();++i)
     {
         int a=edges[i].second.first;
         int b=edges[i].second.second;
-        if(a!=0 && a!=here && (visited&(1<<a))) continue;
-        if(b!=0 && b!=here && (visited&(1<<b))) continue;
+        if(a!=here && (visited&(1<<a))) continue;
+        if(b!=here && (visited&(1<<b))) continue;
         if(sets.merge(a,b))
             taken+=edges[i].first;
     }
@@ -106,7 +107,7 @@ double dp(int here, int visited)
     {
         if(visited&(1<<next))
             continue;
-        ret=min(ret,dp(next,visited+(1<<next))+dist[here][next]);
+        ret=min(ret,dp(next,visited|(1<<next))+dist[here][next]);
     }
     return ret;
 }
@@ -136,7 +137,7 @@ void search(vector<int>& path, int visited, double currentLength)
             continue;
         
         path.push_back(next);
-        search(path,visited+(1<<next),currentLength+dist[here][next]);
+        search(path,visited|(1<<next),currentLength+dist[here][next]);
         path.pop_back();
     }
 }
