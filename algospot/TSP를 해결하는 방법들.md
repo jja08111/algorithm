@@ -109,7 +109,37 @@ double mstHeuristic(int here, const vector<bool>& visited)
 }
 ```
 
-# 출처 
+## 6. 위 과정+메모이제이션 적용
+메모리의 부족을 방지하기 위해 남은 도시의 수가 5개 이하일때만 메모이제이션을 적용한다.  
+5라는 수는 실험을 통해 나온 최적의 결과라고 한다.  
+cache를 배열이 아닌 연관배열인 map을 이용하였다.
+```c++
+const int CACHE_DEPTH=5;
+//dp(here, visited)=cache[here][남은 도시의 수][visited]
+map<int,double> cache[MAX][CACHE_DEPTH+1];
+
+double dp(int here, int visited)
+{
+    if(visited==(1<<n)-1)
+        return dist[here][0];
+    
+    int remaining=n-__builtin_popcount(visited);
+    double& ret=cache[here][remaining][visited];
+    if(ret>0)
+        return ret;
+    
+    ret=INF;
+    for(int next=0;next<n;++next)
+    {
+        if(visited&(1<<next))
+            continue;
+        ret=min(ret,dp(next,visited+(1<<next))+dist[here][next]);
+    }
+    return ret;
+}
+```
+
+## 출처 
 
 https://jaimemin.tistory.com/408  
 크루스칼의 스패닝 트리 알고리즘, Disjoint Set구현을 위한 Union-find의 표현
