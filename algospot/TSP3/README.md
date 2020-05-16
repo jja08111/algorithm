@@ -34,7 +34,9 @@ double solve()
 ```c++
 bool pathReversePruning(const vector<int>& path)
 {
-    if(path.size()<4) return false;
+    if(path.size()<4) 
+        return false;
+    
     int b=path[path.size()-2];
     int q=path[path.size()-1];
     for(int i=0;i+3<path.size();++i)
@@ -61,7 +63,7 @@ struct DisjointSet
         for(int i=0;i<vilageNum;++i)
         {
             parent[i]=i;
-            rank[i];
+            rank[i]=0;
         }
     }
     //here가 포함된 집합의 대표를 반환
@@ -76,7 +78,6 @@ struct DisjointSet
     {
         a=find(a);
         b=find(b);
-        //두 도시가 이미 연결되어 있는 경우
         if(a==b)
             return false;
         if(rank[a]>rank[b])
@@ -84,7 +85,7 @@ struct DisjointSet
         parent[a]=b;
         if(rank[a]==rank[b])
             ++rank[b];
-        components--;
+        --components;
         return true;
     }
 };
@@ -92,16 +93,17 @@ struct DisjointSet
 // 간선의 길이, 간선의 두 정점
 vector<pair<double,pair<int,int> > > edges;
 
-double mstHeuristic(int here, const vector<bool>& visited)
+double mstHeuristic(int here, int visited)
 {
     DisjointSet sets(n);
     double taken=0;
+    
     for(int i=0;i<edges.size();++i)
     {
         int a=edges[i].second.first;
         int b=edges[i].second.second;
-        if(a!=0 && a!=here && visited[a]) continue;
-        if(b!=0 && b!=here && visited[b]) continue;
+        if(a!=here && (visited&(1<<a))) continue;
+        if(b!=here && (visited&(1<<b))) continue;
         if(sets.merge(a,b))
             taken+=edges[i].first;
     }
@@ -121,7 +123,7 @@ map<int,double> cache[MAX][CACHE_DEPTH+1];
 double dp(int here, int visited)
 {
     if(visited==(1<<n)-1)
-        return dist[here][0];
+        return 0.0;
     
     int remaining=n-__builtin_popcount(visited);
     double& ret=cache[here][remaining][visited];
@@ -133,11 +135,18 @@ double dp(int here, int visited)
     {
         if(visited&(1<<next))
             continue;
-        ret=min(ret,dp(next,visited+(1<<next))+dist[here][next]);
+        ret=min(ret,dp(next,visited|(1<<next))+dist[here][next]);
     }
     return ret;
 }
 ```
+## 회고
+교재는 문제가 시작위치로 다시 돌아오는 것이지만 온라인 문제는 한번씩만 방문하면 된다.  
+따라서 아래의 두가지 경우를 유의해야 한다.  
+- 함수 mstHeuristic의 if문의 조건중 a!=0과 같은 조건을 넣어서는 안된다.  
+- 함수 dp에서 기저사례에 도달시 dist[here][0]이 아닌 0.0을 반환하여야 한다.  
+
+위 두개의 조건을 디버깅 하느라 한참을 헤매었다.
 
 ## 출처 
 
