@@ -46,3 +46,6 @@ bool pathReversePruning(const vector<int>& path)
 }
 ```
 ## 5. MST(최소스패닝트리)인 경로는 최적해보다 작은 점을 이용
+https://jaimemin.tistory.com/408
+https://www.weeklyps.com/entry/%ED%81%AC%EB%A3%A8%EC%8A%A4%EC%B9%BC-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-Kruskals-algorithm
+https://bowbowbow.tistory.com/26
