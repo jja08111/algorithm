@@ -1,10 +1,16 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <algorithm>
 using namespace std;
 
-vector<vector<pair<int,int> > > rotations;
+int boardHeight,boardWidth;
+vector<string> board;
+int isCovered[10][10];
+int best;
+
 int blockSize;
+vector<vector<pair<int,int> > > rotations;
 
 vector<string> rotate(const vector<string>& arr)
 {
@@ -40,6 +46,99 @@ void generateRotations(vector<string> block)
         block=rotate(block);
     }
     sort(rotations.begin(),rotations.end());
-    rotations.erase(unique(rotations.begin(),rotations,end()), rotations.end());
+    //중복되는 블럭을 제거한다.
+    rotations.erase(unique(rotations.begin(),rotations.end()), rotations.end());
     blockSize=rotations[0].size();
+}
+
+bool inRange(const int y, const int x)
+{
+    return 0<=y && y<boardHeight && 0<=x && x<boardWidth;
+}
+
+bool set(int y, int x, const vector<pair<int,int> >& blocksPosition, int delta)
+{
+    bool canSet=true;
+    for(int i=0;i<blockSize;++i)
+    {
+        int ny=y+blocksPosition[i].first;
+        int nx=x+blocksPosition[i].second;
+        
+        if(!inRange(ny,nx))
+            canSet=false;
+        else if((isCovered[ny][nx]+=delta)>1)
+            canSet=false;
+    }
+    return canSet;
+}
+
+void search(int placedBlockNum)
+{
+    //아직 채우지 못한 맨 윗줄의 왼쪽 칸을 찾는다.
+    int y=-1,x=-1;
+    for(int i=0;i<boardHeight;++i)
+    {
+        for(int j=0;j<boardWidth;++j)
+            if(isCovered[i][j]==0)
+            {
+                y=i;
+                x=j;
+                break;
+            }
+        if(y!=-1)
+            break;
+    }
+    //기저사례: 모든 칸을 처리한 경우
+    if(y==-1)
+    {
+        best=max(best,placedBlockNum);
+        return;
+    }
+    //현재 칸에 블록을 배치한다.
+    for(int i=0;i<rotations.size();++i)
+    {
+        if(set(y,x,rotations[i],1))
+            search(placedBlockNum+1);
+        set(y,x,rotations[i],-1);
+    }
+    //이 칸을 덮지 않고 '막아'둔다.
+    isCovered[y][x]=1;
+    search(placedBlockNum);
+    isCovered[y][x]=0;
+}
+
+int solve()
+{
+    best=0;
+    for(int i=0;i<boardHeight;++i)
+        for(int j=0;j<boardWidth;++j)
+            isCovered[i][j]=(board[i][j]=='#' ? 1 : 0);
+    
+    search(0);
+    return best;
+}
+
+int main()
+{
+    int testCase;
+    cin>>testCase;
+    while(testCase--)
+    {
+        vector<string> block;
+        int blockHeight, blockWidth;
+        cin>>boardHeight>>boardWidth>>blockHeight>>boardWidth;
+        
+        board=vector<string>(boardHeight);
+        block=vector<string>(blockHeight);
+        for(int i=0;i<boardHeight;++i)
+            cin>>board[i];
+        for(int i=0;i<blockHeight;++i)
+            cin>>block[i];
+        
+        generateRotations(block);
+        
+        cout<<solve()<<endl;
+    }
+    
+    return 0;
 }
