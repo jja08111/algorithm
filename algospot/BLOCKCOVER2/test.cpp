@@ -142,18 +142,12 @@ int main()
         int blockHeight, blockWidth;
         cin>>boardHeight>>boardWidth>>blockHeight>>blockWidth;
         
+        board=vector<string>(boardHeight);
+        block=vector<string>(blockHeight);
         for(int i=0;i<boardHeight;++i)
-        {
-            string tmp;
-            cin>>tmp;
-            board.push_back(tmp);
-        }
+            cin>>board[i];
         for(int i=0;i<blockHeight;++i)
-        {
-            string tmp;
-            cin>>tmp;
-            block.push_back(tmp);
-        }
+            cin>>block[i];
         
         generateRotations(block);
         
