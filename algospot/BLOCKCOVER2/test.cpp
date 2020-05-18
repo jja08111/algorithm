@@ -72,8 +72,21 @@ bool set(int y, int x, const vector<pair<int,int> >& blocksPosition, int delta)
     return canSet;
 }
 
+bool canPruneBlock(int placedBlockNum)
+{
+    int emptyCell=0;
+    for(int i=0;i<boardHeight;++i)
+        for(int j=0;j<boardWidth;++j)
+            emptyCell+=(isCovered[i][j]==0 ? 1 : 0);
+    //남은 칸 개수가 블록을 놓아도 현재의 최적해보다 작거나 같을때
+    return (emptyCell/blockSize)+placedBlockNum<=best;
+}
+
 void search(int placedBlockNum)
 {
+    if(canPruneBlock(placedBlockNum))
+        return;
+    
     //아직 채우지 못한 맨 윗줄의 왼쪽 칸을 찾는다.
     int y=-1,x=-1;
     for(int i=0;i<boardHeight;++i)
@@ -124,16 +137,23 @@ int main()
     cin>>testCase;
     while(testCase--)
     {
+        board.clear();
         vector<string> block;
         int blockHeight, blockWidth;
-        cin>>boardHeight>>boardWidth>>blockHeight>>boardWidth;
+        cin>>boardHeight>>boardWidth>>blockHeight>>blockWidth;
         
-        board=vector<string>(boardHeight);
-        block=vector<string>(blockHeight);
         for(int i=0;i<boardHeight;++i)
-            cin>>board[i];
+        {
+            string tmp;
+            cin>>tmp;
+            board.push_back(tmp);
+        }
         for(int i=0;i<blockHeight;++i)
-            cin>>block[i];
+        {
+            string tmp;
+            cin>>tmp;
+            block.push_back(tmp);
+        }
         
         generateRotations(block);
         
