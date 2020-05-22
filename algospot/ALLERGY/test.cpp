@@ -1,3 +1,4 @@
+//https://algospot.com/judge/submission/detail/660706
 #include <iostream>
 #include <vector>
 #include <string>
@@ -64,12 +65,12 @@ void search(long long int edible, int chosen)
         return;
     }
     //아직 먹을 음식이 없는 친구를 찾음
-    long long int first=(~edible&(edible+1));
+    long long int first=((~edible)&(edible+1));
     convertIndex(first);
     
     //first친구가 먹을 수 있는 음식을 찾음
     for(int food=0;food<m;++food)
-        if(canEat[first]&(1<<food))
+        if(canEat[first]&(1LL<<food))
             search(edible|eaters[food],chosen+1);
 }
 
