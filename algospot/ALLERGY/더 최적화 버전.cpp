@@ -11,10 +11,22 @@ int n,m;
 //bit로 표현
 long long int canEat[50], eaters[50];
 int best;
+map<int,int> convertIndex;
+
+void preCacl()
+{
+    int num=1;
+    for(int i=0;i<50;++i)
+    {
+        convertIndex[num]=i;
+        num*=2;
+    }
+}
 
 void init()
 {
     cin>>n>>m;
+    best=m;
     
     map<string,long long> index;
     for(int i=0;i<n;++i)
@@ -40,17 +52,7 @@ void init()
             canEat[index[name]]|=(1LL<<i);
         }
     }
-}
-
-void convertIndex(long long int& input)
-{
-    int ret=0, num=input;
-    while(num>1)
-    {
-        num/=2;
-        ++ret;
-    }
-    input=ret;
+    preCacl();
 }
 
 void search(long long int edible, int chosen)
@@ -64,8 +66,8 @@ void search(long long int edible, int chosen)
         return;
     }
     //아직 먹을 음식이 없는 친구를 찾음
-    long long int first=((~edible)&(edible+1));
-    convertIndex(first);
+    long long int first=(~edible&(edible+1));
+    first=convertIndex[first];
     
     //first친구가 먹을 수 있는 음식을 찾음
     for(int food=0;food<m;++food)
@@ -80,7 +82,6 @@ int main()
     while(testCase--)
     {
         init();
-        best=m;
         search(0,0);
         cout<<best<<endl;
     }
