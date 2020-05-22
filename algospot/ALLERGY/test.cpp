@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include <map>
 #include <algorithm>
 using namespace std;
@@ -15,49 +16,41 @@ void init()
 {
     cin>>n>>m;
     
-    map<string,int> friendsName;
+    map<string,int> index;
     for(int i=0;i<n;++i)
     {
-        string tmp;
-        cin>>tmp;
-        friendsName[tmp]=i;
+        string name;
+        cin>>name;
+        index[name]=i;
     }
-    //make eaters
+    //make canEat, eaters
+    for(int i=0;i<50;++i)
+        canEat[i]=eaters[i]=0;
     for(int i=0;i<m;++i)
     {
         int eatersNum;
         cin>>eatersNum;
         
-        eaters[i]=0;
         for(int j=0;j<eatersNum;++j)
         {
             string name;
             cin>>name;
             
-            long long int bit=(1<<friendsName[name]);
-            eaters[i]|=bit;
+            eaters[i]|=(1<<index[name]);
+            canEat[index[name]]|=(1<<i);
         }
-    }
-    //make canEat
-    for(int i=0;i<n;++i)
-    {
-        canEat[i]=0;
-        long long int bit=(1<<i);
-        for(int j=0;j<m;++j)
-            if(bit&eaters[j])
-                canEat[i]|=(1<<j);
     }
 }
 
-int findBitIndex(long long int num)
+void convertIndex(long long int& input)
 {
-    int ret=0;
+    int ret=0, num=input;
     while(num>1)
     {
         num/=2;
         ++ret;
     }
-    return ret;
+    input=ret;
 }
 
 void search(long long int edible, int chosen)
@@ -72,12 +65,12 @@ void search(long long int edible, int chosen)
     }
     //아직 먹을 음식이 없는 친구를 찾음
     long long int first=(~edible&(edible+1));
-    first=findBitIndex(first);
+    convertIndex(first);
     
     //first친구가 먹을 수 있는 음식을 찾음
-    for(int i=0;i<m;++i)
-        if(canEat[first]&(1<<i))
-            search(edible|eaters[i],chosen+1);
+    for(int food=0;food<m;++food)
+        if(canEat[first]&(1<<food))
+            search(edible|eaters[food],chosen+1);
 }
 
 int main()
@@ -87,7 +80,7 @@ int main()
     while(testCase--)
     {
         init();
-        best=n;
+        best=m;
         search(0,0);
         cout<<best<<endl;
     }
