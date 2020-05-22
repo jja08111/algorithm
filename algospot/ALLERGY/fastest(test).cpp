@@ -12,7 +12,7 @@ int n,m;
 //bit로 표현
 long long int canEat[50];
 //먹을수 있는 사람이 많은 순으로 해야한다.
-vector<pair<long long int,int> > eaters;
+vector<pair<int,pair<long long int,int> > > eaters;
 int best;
 
 void init()
@@ -45,9 +45,8 @@ void init()
             bitmask|=(1LL<<index[name]);
             canEat[index[name]]|=(1LL<<i);
         }
-        eaters.push_back(make_pair(bitmask,i));
+        eaters.push_back(make_pair(__builtin_popcount(bitmask),make_pair(bitmask,i)));
     }
-    
     sort(eaters.begin(),eaters.end());
 }
 
@@ -81,10 +80,10 @@ void search(long long int edible, int chosen)
     int first=minimum(edible);
     
     //first친구가 먹을 수 있는 음식을 찾음
-    vector<pair<long long int,int> >::iterator food;
+    vector<pair<int,pair<long long int,int> > >::iterator food;
     for(food=eaters.begin();food!=eaters.end();++food)
-        if(canEat[first]&(1LL<<(food->second)))
-            search(edible|(food->first),chosen+1);
+        if(canEat[first]&(1LL<<(food->second.second)))
+            search(edible|(food->second.first),chosen+1);
 }
 
 int main()
