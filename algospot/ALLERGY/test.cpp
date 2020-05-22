@@ -1,4 +1,3 @@
-//https://algospot.com/judge/submission/detail/660706
 #include <iostream>
 #include <vector>
 #include <string>
@@ -17,7 +16,7 @@ void init()
 {
     cin>>n>>m;
     
-    map<string,int> index;
+    map<string,long long> index;
     for(int i=0;i<n;++i)
     {
         string name;
@@ -37,8 +36,8 @@ void init()
             string name;
             cin>>name;
             
-            eaters[i]|=(1<<index[name]);
-            canEat[index[name]]|=(1<<i);
+            eaters[i]|=(1LL<<index[name]);
+            canEat[index[name]]|=(1LL<<i);
         }
     }
 }
@@ -59,7 +58,7 @@ void search(long long int edible, int chosen)
     if(chosen>=best)
         return;
     //기저사례 : 전부 먹을 음식이 있는 경우
-    if(edible==((1<<n)-1))
+    if(edible==((1LL<<n)-1))
     {
         best=chosen;
         return;
