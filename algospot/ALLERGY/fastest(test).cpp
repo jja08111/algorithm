@@ -1,9 +1,9 @@
-//먹을수 있는 사람이 많은순으로 eaters를 만들어야 한다.
 #include <iostream>
 #include <vector>
 #include <string>
 #include <map>
 #include <algorithm>
+#include <functional>
 using namespace std;
 
 int n,m;
@@ -47,7 +47,7 @@ void init()
         }
         eaters.push_back(make_pair(__builtin_popcount(bitmask),make_pair(bitmask,i)));
     }
-    sort(eaters.begin(),eaters.end());
+    sort(eaters.begin(),eaters.end(),greater<pair<int,pair<long long int,int> > >());
 }
 
 int minimum(long long int edible)
