@@ -92,30 +92,34 @@ void generateCandidates()
     }
 }
 
-void generateHintsData(int index)
+void generateHintsData()
 {
-    int y,x,dir,num;
-    cin>>y>>x>>dir>>num;
-    --y;--x;
-    
-    hint[y][x][dir]=index;
-    sum[index]=num;
-    
-    int moveY=0, moveX=0;
-    (dir==1) ? moveY=1 : moveX=1;
-    
-    int nextY=y+moveY, nextX=x+moveX;
-    int len=0;
-    while(true)
+    cin>>hintNum;
+    for(int index=0;index<hintNum;++index)
     {
-        if(!color[nextY][nextX])
-            break;
-        hint[nextY][nextX][dir]=index;
-        nextY+=moveY;
-        nextX+=moveX;
-        ++len;
+        int y,x,dir,num;
+        cin>>y>>x>>dir>>num;
+        --y;--x;
+        
+        hint[y][x][dir]=index;
+        sum[index]=num;
+        
+        int moveY=0, moveX=0;
+        (dir==1) ? moveY=1 : moveX=1;
+        
+        int nextY=y+moveY, nextX=x+moveX;
+        int len=0;
+        while(true)
+        {
+            if(!color[nextY][nextX])
+                break;
+            hint[nextY][nextX][dir]=index;
+            nextY+=moveY;
+            nextX+=moveX;
+            ++len;
+        }
+        length[index]=len;
     }
-    length[index]=len;
 }
 
 void init()
@@ -132,9 +136,7 @@ void init()
     memset(length,0,sizeof(length));
     memset(known,0,sizeof(known));
     
-    cin>>hintNum;
-    for(int idx=0;idx<hintNum;++idx)
-        generateHintsData(idx);
+    generateHintsData();
     generateCandidates();
 }
 
