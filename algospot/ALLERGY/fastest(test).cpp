@@ -12,6 +12,8 @@ int n,m;
 //bit로 표현
 long long int canEat[50];
 //먹을수 있는 사람이 많은 순으로 해야한다.
+//first=>먹을 수 있는 사람의 수
+//second.first=>먹을 수 있는 사람의 bit, second.second=>음식의 index
 vector<pair<int,pair<long long int,int> > > eaters;
 int best;
 
