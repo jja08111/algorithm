@@ -22,7 +22,8 @@ double getDistance(const Point& p1, const Point& p2)
 bool decision(double power)
 {
     //첫번째 기지 부터 방문
-    long long unVisited=(1<<n)-1-1;
+    vector<bool> visited(n,false);
+    visited[0]=true;
     queue<int> q;
     q.push(0);
     int seen=0;
@@ -32,9 +33,9 @@ bool decision(double power)
         q.pop();
         ++seen;
         for(int there=0;there<n;++there)
-            if((unVisited&(1<<there)) && dist[here][there]<=power)
+            if(!visited[there] && dist[here][there]<=power)
             {
-                unVisited^=(1<<there);
+                visited[there]=true;
                 q.push(there);
             }
     }
