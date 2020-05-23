@@ -1,9 +1,5 @@
 #include <iostream>
-#include <vector>
 #include <cstring>
-#include <map>
-#include <algorithm>
-#include <functional>
 using namespace std;
 
 const int MAXN=20;
