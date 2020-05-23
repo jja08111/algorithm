@@ -72,8 +72,8 @@ int main()
         }
         
         for(int i=0;i<n;++i)
-            for(int j=0;j<n;++j)
-                dist[i][j]=getDistance(base[i],base[j]);
+            for(int j=i;j<n;++j)
+                dist[i][j]=dist[j][i]=getDistance(base[i],base[j]);
         
         printf("%.2lf \n",getMinPower());
     }
