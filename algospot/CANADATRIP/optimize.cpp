@@ -4,7 +4,7 @@ using namespace std;
 
 struct RoadSign {
     int mStart, mEnd, mGap;
-    void insert(int l, int m, int g) {
+    void init(int l, int m, int g) {
         mStart=l-m;
         mEnd=l;
         mGap=g;
@@ -61,7 +61,7 @@ int main()
             int l,m,g;
             
             scanf("%d %d %d",&l,&m,&g);
-            tmp.insert(l,m,g);
+            tmp.init(l,m,g);
             signs.push_back(tmp);
         }
         
