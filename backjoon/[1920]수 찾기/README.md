@@ -19,7 +19,7 @@ bool findNum(int a)
         // 찾으려는 값보다 num[mid]값이 크다면 왼쪽으로 이동
         if(num[mid]>a)
             hi=mid-1;
-        // 작다면 쪽으로 이동
+        // 작다면 오른쪽으로 이동
         else 
             lo=mid+1;
     }
