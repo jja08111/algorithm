@@ -10,6 +10,7 @@ struct RoadSign {
         mGap=g;
     }
     int count(int here) {
+        //구간 [start, min(here,end)]에서 표지판의 개수 반환
         return (min(here,mEnd)-mStart)/mGap+1;
     }
 };
@@ -17,10 +18,12 @@ struct RoadSign {
 int n, k;
 vector<RoadSign> signs;
 
+//dist 지점까지 가면서 표지판이 k개 이상인가?
 bool decision(int dist)
 {
     int sum=0;
     for(int i=0;i<n;++i)
+        //표지판이 하나라도 존재할때
         if(dist>=signs[i].mStart)
         {
             sum+=signs[i].count(dist);
