@@ -47,6 +47,5 @@ double optimize()
 }
 ```
 
-
-참고  
+## 참고  
 https://m.blog.naver.com/PostView.nhn?blogId=remocon33&logNo=221292540493&proxyReferer=https:%2F%2Fwww.google.com%2F
