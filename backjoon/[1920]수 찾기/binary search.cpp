@@ -9,17 +9,17 @@ int num[100001];
 bool findNum(int a)
 {
     int lo=0, hi=n-1;
-    for(int it=0;it<20;++it)
+    while(hi>=lo)
     {
         int mid=(lo+hi)/2;
         
-        if(num[hi]==a)
+        if(num[mid]==a)
             return true;
         
-        if(num[mid]>=a)
-            hi=mid;
+        if(num[mid]>a)
+            hi=mid-1;
         else 
-            lo=mid;
+            lo=mid+1;
     }
     return false;
 }
@@ -44,6 +44,6 @@ int main()
         else
             printf("0 \n");
     }
-    
+   
     return 0;
 }
