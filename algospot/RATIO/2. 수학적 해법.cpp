@@ -1,8 +1,5 @@
 #include <iostream>
-#include <cmath>
 using namespace std;
-
-const long long MAX_N=2000000000;
 
 int getRatio(long long total, long long win)
 {
