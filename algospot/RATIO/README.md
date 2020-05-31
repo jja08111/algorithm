@@ -41,7 +41,7 @@ int neededGames(long long total, long long win)
 - x >= (RN-100M)/(100-R)
 
 이 식을 만족하는 최소의 정수는 오른쪽 분수를 올림한 값이다.  
-아래의 코드에서 올림한 부분을 눈여겨 볼 만 하다.  
+아래의 코드에서 올림을 구현한 부분을 눈여겨 볼 만 하다.  
 ```c++
 int neededGames(long long total, long long win)
 {
