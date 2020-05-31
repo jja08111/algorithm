@@ -13,6 +13,7 @@ bool isPrime(int n)
     if(n%2==0)
         return false;
     int sqrtn=int(sqrt(n));
+    
     for(int divide=3;divide<=sqrtn;divide+=2)
         if(n%divide==0)
             return false;
@@ -27,6 +28,7 @@ vector<int> factorSimple(int n)
 {
     vector<int> ret;
     int sqrtn=int(sqrt(n));
+    
     for(int divide=2;divide<=sqrtn;++divide)
         while(n%divide==0)
         {
@@ -36,5 +38,27 @@ vector<int> factorSimple(int n)
     if(n>1)
         ret.push_back(n);
     return ret;
+}
+```
+### 3. 에아토스테네스의 체
+마치 체로 물건을 걸러내는 것처럼 2부터 n까지 현재 소수라고 판되는 수를 지워나가는 방식이다.  
+여기서 최적화 할 것은 아래의 두가지이다. 
+- 지워지지 않은 수를 찾을 때 sqrt(n)까지만 찾는다.  
+- i의 배수들을 지울때 ixi에서 시작한다.  
+왜냐하면 그 앞의 수들은 2xi, 3xi,... 에서 이미 지워졌기 때문이다.  
+```c++
+int n;
+bool isPrime[MAX_N+1];
+
+void eratosthenes()
+{
+    memset(isPrime,1,sizeof(isPrime));
+    isPrime[0]=isPrime[1]=false;
+    int sqrtn=int(sqrt(n));
+    
+    for(int i=2;i<=sqrtn;++i)
+        if(isPrime[i])
+            for(int j=i*i;j<=n;j+=i)
+                isPrime[j]=false;
 }
 ```
