@@ -84,7 +84,7 @@ void eratosthenes2()
             for(int j=i*i;j<=n;j+=i)
                 //아직 약수를 본 적 없는 숫자인 경우 i를 써 둔다.
                 if(minFactor[j]==j)
-                    minFactor[j]==i;
+                    minFactor[j]=i;
         }
     }
 }
