@@ -2,7 +2,7 @@
 using namespace std;
 
 // amount원을 연 이율 rates퍼센트로 duration월 간 한 달에 monthlyPayment로
-// 남았을 떄 대출 잔금은?
+// 남았을 때 대출 잔금은?
 double balance(double amount, int duration, double rates, double monthlyPayment)
 {
     double ret=amount;
