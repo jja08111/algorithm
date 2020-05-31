@@ -40,7 +40,7 @@ vector<int> factorSimple(int n)
     return ret;
 }
 ```
-### 3. 에아토스테네스의 체
+### 3. 에라토스테네스의 체
 마치 체로 물건을 걸러내는 것처럼 2부터 n까지 현재 소수라고 판되는 수를 지워나가는 방식이다.  
 여기서 최적화 할 것은 아래의 두가지이다. 
 - 지워지지 않은 수를 찾을 때 sqrt(n)까지만 찾는다.  
@@ -60,5 +60,43 @@ void eratosthenes()
         if(isPrime[i])
             for(int j=i*i;j<=n;j+=i)
                 isPrime[j]=false;
+}
+```
+### 4. 에라토스테네스의 체를 이용한 빠른 소인수 분해 
+최적화의 비결은 각 수가 소수인지만을 기록하지 않고 가장 작은 소인수를 기록하는 것이다.  
+2부터 약수를 기록해나가면서 아직 약수가 나오지 않은 수에 현재 소수를 기록한다.  
+그리고 다시 기록된 가장 작은 소인수들로 n을 나누며 소인수를 찾는다.  
+```c++
+int minFactor[MAX_N];
+
+void eratosthenes2()
+{
+    minFactor[0]=minFactor[1]=-1;
+    // 모든 숫자를 처음에는 소수로 표시해 둔다. 
+    for(int i=2;i<=n;++i)
+        minFactor[i]=i;
+    int sqrtn=int(sqrt(n));
+    
+    for(int i=2;i<=sqrtn;++i)
+    {
+        if(minFactor[i]==i)
+        {
+            for(int j=i*i;j<=n;j+=i)
+                //아직 약수를 본 적 없는 숫자인 경우 i를 써 둔다.
+                if(minFactor[j]==j)
+                    minFactor[j]==i;
+        }
+    }
+}
+
+vector<int> factor(int n)
+{
+    vector<int> ret;
+    while(n>1)
+    {
+        ret.push_back(minFactor[n]);
+        n/=minFactor[n];
+    }
+    return ret;
 }
 ```
