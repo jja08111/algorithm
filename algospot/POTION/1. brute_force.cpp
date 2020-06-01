@@ -12,7 +12,7 @@ vector<int> getNeededPotion(const vector<int>& recipe, vector<int>& put)
         ret[i]=max(0,recipe[i]-put[i]);
         put[i]+=ret[i];
     }
-    // 비율이 전부 맞을 떄까지 재료를 계속 추가하자.
+    // 비율이 전부 맞을 때까지 재료를 계속 추가하자.
     while(true)
     {
         bool ok=true;
