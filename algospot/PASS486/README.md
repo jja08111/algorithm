@@ -65,3 +65,15 @@ void getFactorsNum()
     }
 }
 ```
+
+### 단순한 방법 
+에라토스테네스의 체를 이용하지 않고 약수를 직접 구할 수도 있으나 이 방법은 2.5배 느리다.  
+```c++
+void getFactorsNum()
+{
+    memset(factorsNum,0,sizeof(factorsNum));
+    for(int divide=1;divide<MAX_N;++divide)
+        for(int multiple=divide;multiple<MAX_N;multiple+=divide)
+            ++factorsNum[multiple];
+}
+```
