@@ -23,6 +23,7 @@ vector<int> solve(const vector<int>& recipe, const vector<int>& put)
     // 최소한 b/b=1배는 만들어야 하므로, a의 초기 값을 b로 둔다.
     int a=b;
     // X를 직접 구하는 대신 getCeil(put[i]*b, recipe[i])의 최대값을 구한다. 
+    // 원래의 분량을 1/b병으로 나눴을때 최대 병의 수를 구한다.  
     for(int i=0;i<n;++i)
         a=max(a,getCeil(put[i]*b,recipe[i]));
     // a/b배 분량을 만들면 된다.
