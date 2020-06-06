@@ -14,6 +14,11 @@ double howMuchCloser(vector2 p, vector2 a, vector2 b) {
 벡터의 내적은 아래와 같이 쓸 수 있다. 
 - a · b = ax · bx + ay · by  
       = |a| · |b|cosθ 
+```c++
+double dot(const vector2& rhs) const {
+    return x*rhs.x + y*rhs.y;
+}
+```
 
 첫 번째 식과 두 번째 식을 이용하면 아래와 같은 내용을 얻을 수 있다. 
 
@@ -40,4 +45,17 @@ vector2 project(const vector2& rhs) const {
 
 ## 벡터의 외적 
 외적에서 유용한 것은 반환되는 벡터의 방향과 길이이다.  
-- a X b = ax 
+- a X b = ax · by - ay · bx  
+        = |a| · |b|sinθ
+```c++
+double dot(const vector2& rhs) const {
+    return x*rhs.y - rhs.x*y;
+}
+``` 
+외적은 다음과 같은 용도로 사용된다.  
+
+## 1. 면적 계산하기 
+|a|sinθ는 a와 b를 두 변으로 하는 평행사변형의 높이이다.  
+따라서 외적의 절대값을 이용하여 평행사변형의 넓이를 쉽게 구할 수 있고  
+이는 원점과 a,b를 꼭지점으로 하는 삼각형의 넓이를 2로 나누어 구할 수 있다.  
+
