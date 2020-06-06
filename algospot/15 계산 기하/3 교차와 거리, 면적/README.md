@@ -71,3 +71,42 @@ bool segmentIntersection(vector2 a, vector2 b, vector2 c, vector2 d, vector2& p)
     return inBoundingRectangle(p,a,b) && inBoundingRectangle(p,c,d);
 }
 ```
+
+## 선분과 선분의 교차: 교차점이 필요 없을 때
+ccw()를 이용하여 교차점을 구하지 않고 교차점의 여부를 쉽게 판단할 수 있다.  
+두 선분이 교차하려면 ccw(a,b,c)와 ccw(a,b,d) 중 하나는 양수, 하나는 음수여야 선분(a,b)에 대해 c와 d가 좌,우측으로 위치해 있다.   
+마찬가지로 ccw(a,b,c)와 ccw(a,b,d)의 곱 또한 음수여야 한다.   
+
+예외로는 두 선분이 한 직선위에 있을 경우를 처리해야 한다.  
+```c++
+//두 선분이 서로 접촉하는지 여부를 판단한다.
+bool segmentIntersects(vector2 a, vector2 b, vector2 c, vector2 d)
+{
+    double ab=ccw(a,b,c)*ccw(a,b,d);
+    double cd=ccw(c,d,a)*ccw(c,d,b);
+    //두 선분이 한 직선위에 있거나 끝점이 겹치는 경우
+    if(ab==0 && cd==0)
+    {
+        if(b<a) swap(a,b);
+        if(d<c) swap(c,d);
+        return !(b<c || d<a);
+    }
+    return ab<=0 && cd<=0;
+}
+```
+
+## 점과 선 사이의 거리 
+점 p가 선 (a,b)에 내리는 수선의 발을 계산한 뒤 p와의 거리를 구하면 된다.  
+벡터의 내적을 이용하면 수선의 발을 쉽게 구할 수 있다.  
+```c++
+//점 p에서 (a,b)직선에 내린 수선의 발을 구한다.
+vector2 perpendicularFoot(vector2 p, vector2 a, vector2 b) {
+    return a+(p-a).project(b-a);
+}
+
+//점 p와 (a,b)직선 사이의 거리를 구한다. 
+double pointToLine(vector2 p, vector2 a, vector2 b) {
+    return (p-perpendicularFoot(p,a,b)).norm();
+}
+```
+이는 선분과 선분 사이의 거리를 구하는 데 유용하게 쓰인다.
