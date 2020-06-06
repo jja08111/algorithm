@@ -79,3 +79,30 @@ double ccw2(vector2 p, vector2 a, vector2 b) {
     return ccw(a-p,b-p);
 }
 ```
+
+# 교차와 거리, 면적 
+## 직선과 직선의 교차 
+직선을 한 점과 방향 벡터로 표현한다.  
+- a + p x b  
+
+(https://www.mathfactory.net/11884 에서 직선의 방정식에 관한 내용을 자세히 볼 수 있다.)   
+a + p x b 와 c + q x d 의 교점을 구하기 위해서 방정식 a + p x b = c + q x d 을 풀면 된다.  
+이 식을 좌표에 대해 나타내면 다음과 같은 연립 방정식을 얻을 수 있다.  
+- ax + p x bx = cx + q x dx
+- ay + p x by = cy + q x dy
+
+위 식을 p에 대해 풀어 외적으로 간략화 하면 다음과 같다.  
+- p = {(c - a) X d} / (b X d)
+
+따라서 결과적으로 구한 p를 a + p x b에 대입해 원하는 점을 구할 수 있다.  
+```c++
+bool lineIntersection(vector2 a, vector2 b, vector2 c, vector2 d, vector2& x)
+{
+    double det=(b-a).cross(d-c);
+    //두 선이 평행한 경우 
+    if(fabs(det)<EPSILON) return false;
+    //b와 d는 각 직선과 평행한 방향 벡터이니 b-a, d-c로 표현하고 있다.  
+    x=a+(b-a)*((c-a).cross(d-c)/det);
+    return true;
+}
+```
