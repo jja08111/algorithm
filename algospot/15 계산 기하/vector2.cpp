@@ -23,7 +23,7 @@ struct vector2 {
     }
     
     //실수로 곱셈
-    vector2 operator * (const vector2 rhs) const {
+    vector2 operator * (double rhs) const {
         return vector2(x*rhs, y*rhs);
     }
     
