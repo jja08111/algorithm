@@ -51,3 +51,6 @@ polygon intersection(const polygon& p, double x1, double y1, double x2, double y
     return ret;
 }
 ```
+## 유의 사항 
+위의 알고리즘은 나눠진 다각형을 변을 통해 이어진 하나의 다각형으로 형태로 만든다.  
+다각형을 별개로 생각하는 문제는 후처리 혹은 별도의 알고리즘을 사용해야 한다.   
