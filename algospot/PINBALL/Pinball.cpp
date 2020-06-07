@@ -107,7 +107,7 @@ vector2 reflect(vector2 dir, vector2 center, vector2 contact)
     return (dir-dir.project(contact-center)*2).normalize();
 }
 
-//공의 현재 위치와 방향이 주어질 때 최대 10번의 충돌을 출력한다.
+//공의 현재 위치와 방향이 주어질 때 최대 100번의 충돌을 출력한다.
 void simulate(vector2 here, vector2 dir)
 {
     dir=dir.normalize();
