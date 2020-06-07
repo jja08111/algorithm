@@ -62,7 +62,7 @@ double hitCircle(vector2 here, vector2 dir, vector2 center, int radius)
 }
 ```
 
-# 반사 처리 
+### 반사 처리 
 벡터의 사영을 이용하여 간단하게 구현할 수 있다.  
 ```c++
 //here에 있던 공이 dir 방향으로 굴러와 center를 중심으로 하는 장애물에서
@@ -73,7 +73,7 @@ vector2 reflect(vector2 dir, vector2 center, vector2 contact)
 }
 ```
 
-# 시뮬레이션 구현 
+### 시뮬레이션 구현 
 ```c++
 //공의 현재 위치와 방향이 주어질 때 최대 100번의 충돌을 출력한다.
 void simulate(vector2 here, vector2 dir)
