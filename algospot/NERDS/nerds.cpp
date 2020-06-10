@@ -1,15 +1,19 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
+#include <algorithm>
+using namespace std;
 
 struct vector2 {
     double x,y;
     explicit vector2(double x_=0, double y_=0) : x(x_), y(y_) {}
     
+    bool operator == (const vector2& rhs) const {
+        return x==rhs.x && y==rhs.y;
+    }
     bool operator < (const vector2& rhs) const {
         return x!=rhs.x ? x<rhs.x : y<rhs.y;
     }
-    
     vector2 operator - (const vector2& rhs) const {
         return vector2(x-rhs.x, y-rhs.y);
     }
@@ -19,7 +23,7 @@ struct vector2 {
     double cross(const vector2& rhs) const {
         return x*rhs.y-y*rhs.x;
     }
-}
+};
 
 typedef vector<vector2> polygon;
 
@@ -35,11 +39,29 @@ bool segmentIntersects(vector2 a, vector2 b, vector2 c, vector2 d)
     
     if(ab==0 && cd==0)
     {
+        //각 직선을 a가 왼쪽, c가 왼쪽에 위치하도록 한다.
         if(b<a) swap(a,b);
         if(d<c) swap(c,d);
         return !(b<c || d<a);
     }
     return ab<=0 && cd<=0;
+}
+
+bool isInside(vector2 q, const polygon& p)
+{
+    int crosses=0;
+    for(int i=0;i<p.size();++i)
+    {
+        int j=(i+1)%p.size();
+        if((p[i].y>q.y) != (p[j].y>q.y))
+        {
+            //double atX=(q.y-p[i].y)*(p[j].x-p[i].x)/(p[j].y-p[i].y)+p[i].x;
+            double atX=(q.y-p[i].y)*(p[i].x-p[j].x)/(p[i].y-p[j].y)+p[i].x;
+            if(q.x<atX)
+                ++crosses;
+        }
+    }
+    return crosses%2 > 0;
 }
 
 //points에 있는 점들을 모두 포함하는 최소의 볼록 다각형을 찾는다.
@@ -70,9 +92,48 @@ polygon giftWrap(const polygon& points)
     return hull;
 }
 
+//두 다각형이 서로 닿거나 겹치는지 여부를 반환한다.
+bool polygonIntersects(const polygon& p, const polygon& q)
+{
+    int n=p.size(), m=q.size();
+    //우선 한 다각형이 다른 다각형에 포함되어 있는 경우를 확인하자
+    if(isInside(p[0],q) || isInside(q[0],p))
+        return true;
+    //이 외의 경우, 두 다각형이 서로 겹친다면 서로 닿는 두 변이 반드시 존재한다.
+    for(int i=0;i<n;++i)
+        for(int j=0;j<m;++j)
+            if(segmentIntersects(p[i],p[(i+1)%n],q[j],q[(j+1)%m]))
+                return true;
+    
+    return false;
+}
+
 int main()
 {
-    
-
+    int testCase;
+    cin>>testCase;
+    while(testCase--)
+    {
+        polygon p, q;
+        int n;
+        cin>>n;
+        for(int i=0;i<n;++i)
+        {
+            vector2 tmp;
+            bool isNerd;
+            cin>>isNerd>>tmp.x>>tmp.y;
+            if(isNerd)
+                p.push_back(tmp);
+            else
+                q.push_back(tmp);
+        }
+        p=giftWrap(p);
+        q=giftWrap(q);
+        
+        if(polygonIntersects(p,q))
+            cout<<"THEORY IS INVALID"<<endl;
+        else
+            cout<<"THEORY HOLDS"<<endl;
+    }
     return 0;
 }
