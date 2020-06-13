@@ -3,13 +3,12 @@ using namespace std;
 
 void printResult(int n)
 {
-    for(int i=2;i<n;++i)
+    for(int i=2;i*i<=n;++i)
         while(n%i==0)
         {
             n/=i;
             cout<<i<<endl;
         }
-        
     if(n>1)
         cout<<n<<endl;
 }
