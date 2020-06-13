@@ -25,7 +25,6 @@ void getMinDiff()
     ret=min(ret,abs(startAbility-linkAbility));
 }
 
-// 비트 마스크를 이용
 void solve(int here, int count)
 {
     if(ret==0) return;
