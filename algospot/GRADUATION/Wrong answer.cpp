@@ -1,3 +1,7 @@
+//  WARNING
+//  아래의 코드는
+//  틀린 코드입니다.
+//
 #include <iostream>
 #include <vector>
 using namespace std;
