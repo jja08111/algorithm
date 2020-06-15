@@ -66,7 +66,7 @@ int solve(int taken, int count)
     
     int ret=INF;
     for(int subset=auditable;subset;subset=((subset-1)&auditable))
-        if(__builtin_popcount(subset)<=attendLimit)
+        if(__builtin_popcount(subset)<=attendLimit && (taken^subset)>0)
             ret=min(ret,solve(taken|subset,count+1));
 
     return ret;
