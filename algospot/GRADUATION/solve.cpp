@@ -4,11 +4,12 @@
 using namespace std;
 
 const int INF=987654321;
+const int MAXN=12;
 
 int subjectNum, need, semesterNum, attendLimit;
 //필요한 선수과목, 학기당 개설되는 과목정보를 비트로 표현
 vector<int> prerequisite, classes;
-int cache[1<<12][10];
+int cache[1<<MAXN][10];
 
 void readVector(vector<int>& v, int n)
 {
