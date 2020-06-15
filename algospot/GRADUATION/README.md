@@ -48,5 +48,21 @@ int solve(int taken, int semester)
 
 
 # 회고 
-처음에는 문제를 보고 비트 마스크를 이용하여 집합인 부분을 간단하게 해결해야겠다는 생각만 했다.  
-그래서 
+- 처음에는 문제를 보고 비트 마스크를 이용하여 집합인 부분을 간단하게 해결해야겠다는 생각만 했다.  
+그래서 메모이제이션을 한다는 것을 잊고 있었다.  
+- 현재 학기에 들을 수 있는 강의를 찾을 때 이미 들은 강의를 같이 제거했어야 했다.  
+그리고 chechPre()를 구현하기 보다는 비트연산을 이용했어야 했다.  
+```c++
+//int auditable=0;
+//for(int i=0;i<subjectNum;++i)
+//    이번학기에 개설되고 선수과목이 해결된 경우
+//    if((semester[count]&(1<<i)) && checkPre(taken,i))
+//        auditable|=(1<<i);
+
+//현재 학기에서 들을 수 있는 강의 중 아직 듣지 않은 강의를 찾음
+int canTake=(classes[semester] & ~taken);
+for(int i=0;i<subjectNum;++i)
+    //이번 학기에 개설되고 선수과목이 해결 안된 경우
+    if((classes[semester]&(1<<i)) && (taken&prerequisite[i])!=prerequisite[i])
+        canTake &= ~(1<<i);
+```
