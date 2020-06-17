@@ -16,10 +16,12 @@ int LSC(int indexA, int indexB)
     
     ret=0;
     int nextB;
+    //strA와 같은 문자가 strB에 있는 경우
     for(nextB=indexB;nextB<lenB;++nextB)
         if(strA[indexA]==strB[nextB])
             ret=max(ret,LSC(indexA+1,nextB+1)+1);
     
+    //strA와 같은 문자가 strB에 없는 경우
     if(indexA<lenA && nextB==lenB)
         ret=max(ret,LSC(indexA+1,indexB));
     
