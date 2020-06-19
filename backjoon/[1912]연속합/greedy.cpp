@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstring>
 using namespace std;
 
 const int NAG_INF=-987654321;
