@@ -29,11 +29,15 @@ int solve(int start)
 ```
 반복문으로 구현하면 아래와 같다. 더욱 효율적이다.
 ```c++
-int answer=seq[0];
-int sum=seq[0];
-for(int i=1;i<n;i++) 
+void solve()
 {
-    sum=max(sum+seq[i],seq[i]);
-    answer=max(answer,sum);
+    int answer=seq[0];
+    int sum=seq[0];
+    for(int i=1;i<n;i++) 
+    {
+        sum=max(sum+seq[i],seq[i]);
+        answer=max(answer,sum);
+    }
+    cout<<answer;
 }
 ```
