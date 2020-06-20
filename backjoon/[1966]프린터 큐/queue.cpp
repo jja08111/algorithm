@@ -7,22 +7,19 @@ int getOrder(priority_queue<int>& priority, queue<pair<int,int> >& document, int
     int count=1;
     while(1)
     {
-        for(int i=0;i<n;++i)
+        if(priority.top()==document.front().second)
         {
-            if(priority.top()==document.front().second)
-            {
-                if(document.front().first==m)
-                    return count;
-                priority.pop();
-                document.pop();
-                count++;
-            }
-            else
-            {
-                pair<int,int> tmp=document.front();
-                document.pop();
-                document.push(tmp);
-            }
+            if(document.front().first==m)
+                return count;
+            priority.pop();
+            document.pop();
+            count++;
+        }
+        else
+        {
+            pair<int,int> tmp=document.front();
+            document.pop();
+            document.push(tmp);
         }
     }
 }
