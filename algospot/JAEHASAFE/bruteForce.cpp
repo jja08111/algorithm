@@ -42,8 +42,15 @@ int minOverlap(const string& a, const string& b)
         if(matched<m && a[begin+matched]==b[matched])
         {
             matched++;
-            if(begin+matched==n && a.substr(0,n-matched)==b.substr(matched,m-matched))
-                return begin;
+            if(begin+matched==n)
+            {
+                string p=a.substr(0,n-matched);
+                string q=b.substr(matched,m-matched);
+                if(p==q)
+                    return begin;
+                begin++;
+                matched=0;
+            }
         }
         else
         {
