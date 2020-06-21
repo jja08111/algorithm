@@ -36,7 +36,7 @@ int minOverlap(const string& a, const string& b)
 {
     int n=a.size(), m=b.size();
     vector<int> pi=getPartialMatch(b);
-    int begin=0, matched=0, ret=INF;
+    int begin=0, matched=0;
     while(begin<n)
     {
         if(matched<m && a[begin+matched]==b[matched])
@@ -46,8 +46,10 @@ int minOverlap(const string& a, const string& b)
             {
                 string p=a.substr(0,n-matched);
                 string q=b.substr(matched,m-matched);
+                // 일치하면 종료한다.
                 if(p==q)
                     return begin;
+                // 실패했을 때 다음 칸으로 넘어간다.
                 begin++;
                 matched=0;
             }
