@@ -42,3 +42,5 @@ vector<int> getPrefixSuffix(const string& s)
     return ret;
 }
 ```
+# 회고 
+substr을 이용해 힘겹게 구현하려 했으나 책에서는 굉장히 간결하게 구현했다.  
