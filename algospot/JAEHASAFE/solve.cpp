@@ -78,10 +78,7 @@ int main()
             if(i==0)
                 cin>>b;
             
-            if(i%2==0)
-                cin>>a;
-            else
-                cin>>b;
+            (i%2) ? cin>>a : cin>>b;
             
             ret+=shifts(a,b);
         }
