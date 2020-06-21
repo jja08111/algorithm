@@ -43,7 +43,7 @@ int minOverlap(const string& a, const string& b)
         {
             matched++;
             if(begin+matched==n && a.substr(0,n-matched)==b.substr(matched,m-matched))
-                ret=min(ret,begin);
+                return begin;
         }
         else
         {
@@ -56,7 +56,7 @@ int minOverlap(const string& a, const string& b)
             }
         }
     }
-    return ret;
+    return -INF;
 }
 
 int main()
