@@ -41,6 +41,7 @@ int maxOverlap(const string& a, const string& b)
         if(matched<m && a[begin+matched]==b[matched])
         {
             ++matched;
+            //문자열 a와 b가 서로 겹쳐졌을 때 
             if(begin+matched==n)
                 return matched;
         }
