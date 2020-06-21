@@ -1,9 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <algorithm>
 using namespace std;
-
 
 vector<int> getPartialMatch(const string& s)
 {
@@ -50,8 +48,7 @@ int main()
     string s=father+mother;
     
     vector<int> ret=getPrefixSuffix(s);
-    sort(ret.begin(),ret.end());
-    for(int i=0;i<ret.size();++i)
+    for(int i=ret.size()-1;i>=0;--i)
         cout<<ret[i]<<" ";
     
     return 0;
