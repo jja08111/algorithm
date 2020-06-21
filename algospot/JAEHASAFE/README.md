@@ -1,22 +1,41 @@
 # 해결 
-### 잘못된 구현
+### 느린 구현
 처음에는 기존 문자열 original에서 목표 문자열 target으로 만들이 위해 두 문자열을 오버랩 했다.  
 그 후 오버랩 된 부분을 지운 나머지가 같으면 쉬프트 성공이라고 생각해 구현했다.  
-하지만 예제들을 통과 했으나 답안은 틀렸다고 나온다.  
+(하지만 예제들은 통과 했으나 답안은 틀렸다고 나왔었다.)  
+
+디버깅에 성공했다. 바로 두 문자열의 오버랩 된 부분외의 문자열이 같지 않았을 때의 처리를 하지 않았기 때문에 오류를 발생시킨 것이다.
+3  
+aabaa  
+aaaba  
+aaaba  
+aabaa  
+
+위와 같은 입력이 들어올 경우 실패했을 때 다음 칸으로 넘어가는 처리를 하지 않으면 오류를 발생시킨다.  
+그러나 이 방법은 substr을 이용하기 때문에 느리다.  
 ```c++
-// 틀린 답안!!!!!
+// 느린답안
 int minOverlap(const string& a, const string& b)
 {
     int n=a.size(), m=b.size();
     vector<int> pi=getPartialMatch(b);
-    int begin=0, matched=0, ret=INF;
+    int begin=0, matched=0;
     while(begin<n)
     {
         if(matched<m && a[begin+matched]==b[matched])
         {
             matched++;
-            if(begin+matched==n && a.substr(0,n-matched)==b.substr(matched,m-matched))
-                return begin;
+            if(begin+matched==n)
+            {
+                string p=a.substr(0,n-matched);
+                string q=b.substr(matched,m-matched);
+                // 일치하면 종료한다.
+                if(p==q)
+                    return begin;
+                // 실패했을 때 다음 칸으로 넘어간다.
+                begin++;
+                matched=0;
+            }
         }
         else
         {
