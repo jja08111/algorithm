@@ -32,10 +32,10 @@ vector<int> getPartialMatch(const string& s)
     return pi;
 }
 
-vector<int> kmpSearch(const string& a, const string& b)
+int kmpSearch(const string& a, const string& b)
 {
     int n=a.size(), m=b.size();
-    vector<int> ret, pi=getPartialMatch(b);
+    vector<int> pi=getPartialMatch(b);
     int begin=0, matched=0;
     while(begin<=n-m)
     {
@@ -43,7 +43,7 @@ vector<int> kmpSearch(const string& a, const string& b)
         {
             matched++;
             if(matched==m)
-                ret.push_back(begin);
+                return begin;
         }
         else
         {
@@ -56,12 +56,12 @@ vector<int> kmpSearch(const string& a, const string& b)
             }
         }
     }
-    return ret;
+    return -1;
 }
 
 int shifts(const string& original, const string& target)
 {
-    return kmpSearch(original+original,target)[0];
+    return kmpSearch(original+original,target);
 }
 
 int main()
