@@ -34,8 +34,9 @@ int minOverlap(const string& a, const string& b)
                 if(p==q)
                     return begin;
                 // 실패했을 때 다음 칸으로 넘어간다.
-                begin++;
-                matched=0;
+                begin+=matched-pi[matched-1];
+                matched=pi[matched-1];
+                matched--;
             }
         }
         else
