@@ -43,7 +43,7 @@ int minOverlap(const string& a, const string& b)
         {
             matched++;
             if(begin+matched==n && a.substr(0,n-matched)==b.substr(matched,m-matched))
-                ret=min(ret,matched);
+                ret=min(ret,begin);
         }
         else
         {
@@ -78,7 +78,7 @@ int main()
             else
                 cin>>a;
             
-            ret+=minOverlap(a,b);
+            ret+=minOverlap(b,a);
         }
         cout<<ret<<endl;
     }
