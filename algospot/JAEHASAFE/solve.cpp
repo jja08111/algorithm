@@ -76,11 +76,11 @@ int main()
         for(int i=0;i<n;++i)
         {
             if(i==0)
-                cin>>b;
+                cin>>a;
             
             (i%2) ? cin>>a : cin>>b;
             
-            ret+=shifts(a,b);
+            ret+=shifts(b,a);
         }
         cout<<ret<<endl;
     }
