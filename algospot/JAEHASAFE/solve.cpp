@@ -4,8 +4,6 @@
 #include <algorithm>
 using namespace std;
 
-const int INF=987654321;
-
 vector<int> getPartialMatch(const string& s)
 {
     int n=s.size();
