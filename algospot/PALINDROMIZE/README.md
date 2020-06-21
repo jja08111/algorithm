@@ -2,7 +2,7 @@
 입력 문자열 S의 접미사이며, S를 뒤집은 문자열 R의 접두사인 문자의 길이가 가장 긴 것을 찾는 문제이다.  
 즉, S와 R을 서로 겹쳐지는 부분이 얼마나 긴지 찾아내는 것이다. 
 
-[KMP 알고리즘](https://bowbowbow.tistory.com/6)을 이용하여 겹치는 부분이 나오면 그 값이 가장 큰 값이기에 바로 반환한다.  
+[KMP 알고리즘](https://bowbowbow.tistory.com/6)을 이용하여 겹치는 부분 일치 하면 그 값이 가장 큰 값이기에 바로 반환한다.  
 그 후 S의 길이에 2배 값에 겹치는 부분을 빼면 원하는 결과가 나온다.  
 ```c++
 vector<int> getPartialMatch(const string& s)
@@ -41,7 +41,7 @@ int maxOverlap(const string& a, const string& b)
         if(matched<m && a[begin+matched]==b[matched])
         {
             ++matched;
-            //문자열 a와 b가 서로 겹쳐졌을 때 
+            //문자열 a와 b가 서로 겹쳐진 부분이 일치 했을 때 
             if(begin+matched==n)
                 return matched;
         }
