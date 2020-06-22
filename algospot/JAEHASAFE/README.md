@@ -13,7 +13,7 @@ aaaba
 aabaa  
 
 위와 같은 입력이 들어올 경우 오버랩 부분을 제외하고 나머지 부분이 다를 때 다음 칸으로 넘어가는 처리를 하지 않으면 오류를 발생시킨다.  
-그러나 이 방법은 substr을 이용하기 때문에 느리다.  
+그러나 이 방법은 조금 더 느리다.    
 ```c++
 // 느린답안
 int minOverlap(const string& a, const string& b)
