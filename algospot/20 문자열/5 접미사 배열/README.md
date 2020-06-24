@@ -1,15 +1,24 @@
 # 접미사 배열 
 ## 맨버-마이어스의 알고리즘 
-https://blog.naver.com/PostView.nhn?blogId=kks227&logNo=221028710658   
-잘 이해가 안 되신다면 d=1에서 d=2로 넘어가는 과정을 살펴봅시다.
 
-1. 접미사 "aaba"와 "aba"를 비교한다고 쳐봅시다. 각각 그룹 번호가 1, 2였으니까 "aaba"가 이번 루프에서도 더 앞의 그룹에 속하게 됩니다.
+이 알고리즘을 요약하면 다음과 같다.  
+1. **접미사들의 첫 번째 글자를 기준으로 같은 글자면 같은 그룹에, 다른 글자면 다른 그룹에 배정한다.**  
+    이때 길이가 0인 접미사를 -1로 저장해 놓아 이용한다.  
+2. **접미사 배열을 0부터 n-1까지 만든다.**  
+    여기서 문자열을 저장하는 것이 아니라 접미사가 원래 문자열에서 시작하는 위치를 저장한다.  
+    그룹의 인덱스 또한 마찬가지다.  
+3. 접미사 배열을 정렬하는데 현재 t=1이다. **즉, 두 번째 글자를 기준으로 정렬하는 것이다.**  
+    정렬시 첫 번째 글자가 다르면 그대로 이용한다.  
+    다르면 t번째 글자, 즉 두 번째 글자로 시작하는 접미사의 그룹을 이용하여 정렬한다.  
+    - **이 부분이 굉장히 중요한데 이전에 계산해 두었던 그룹들을 이용하는 것이다.**    
+      첫 글자를 정렬해 두었으면 그 다음 첫 글자를, 네 글자를 정렬해 두었으면 바로 그 다음 네 글자를 이용할 수 있는 것이다.  
+      **이러한 이유 때문에 속도가 빠를 수 있는 것이다.**
+4. 정렬 후 2t가 n을 넘는다면 접미사 배열을 완성한 것이니 반복문을 빠져 나온다.
+5. 넘지 않는다면 그룹화를 해야 한다. 접미사들이 정렬 되어있으니 비교를 통해 제일 처음 접미사보다 크다면 다음 그룹으로 번호를 선정한다.  
 
-2. 이번엔 "aba"와 "abaaba"를 비교해 봅시다. 앞의 두 글자가 같죠. 그 말인 즉슨 그룹 번호가 원래 같았단 겁니다. 둘 다 2죠. 이번엔 바로 뒤 2글자끼리 비교합니다. "a"는 0번 그룹, "aaba"는 1번 그룹에 속해 있었기에 "abaaba"가 이번 루프에서 더 뒤의 그룹에 속하게 됩니다.
-
-3. 마지막으로 "aaba"와 "aabaaba"는 이런 식으로 2번 비교할 시 그룹 번호가 계속 똑같아서 이번 루프에서도 같은 그룹에 속합니다.  
-
-[출처] 접미사 배열(Suffix Array) (수정: 2018-03-03)|작성자 라이
+짧게 정리한다고 해봤는데 그래도 길다.  
+그만큼 간단하지 않은 알고리즘인 것 같다.
+    
 
 ```c++
 struct Comparator {
@@ -24,5 +33,47 @@ struct Comparator {
         return group[a+t]<group[b+t];
     }
 };
+
+vector<int> getSuffixArray(const vector<int>& s)
+{
+    int n=s.size();
+    int t=1;
+    
+    //첫 번째 글자를 기준으로 그룹화
+    vector<int> group(n+1);
+    for(int i=0;i<n;++i)
+        group[i]=s[i];
+    group[n]=-1;
+    
+    //접미사 배열이 될 값
+    vector<int> perm(n);
+    for(int i=0;i<n;++i)
+        perm[i]=i;
+    
+    while(t<n)
+    {
+        Comparator compareUsing2T(group,t);
+        sort(perm.begin(), perm.end(), compareUsing2T);
+        
+        //2t글자가 n을 넘는다면 접미사 배열 완성
+        //구조체에는 아직 t*=2를 대입하지 않았다!!!
+        t*=2;
+        if(t>=n) break;
+        
+        vector<int> newGroup(n+1);
+        newGroup[n]=-1;
+        newGroup[perm[0]]=0;
+        for(int i=1;i<n;++i)
+            if(compareUsing2T(perm[i-1],perm[i]))
+                newGroup[i]=newGroup[i-1]+1;
+            else
+                newGroup[i]=newGroup[i-1];
+        group=newGroup;
+    }
+    return perm;
+}
 ```
-위 코드에서 2t 글자 기준으로 그룹이 일치하면 해당 접미사의 t만큼 뒤에 있는 접미사 즉, abaaa이고 t가 1이면 baaa를 비교하는 방식으로 나아가는 것이 핵심이다.  
+
+
+# 참고 
+- https://blog.naver.com/PostView.nhn?blogId=kks227&logNo=221028710658   
