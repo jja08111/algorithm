@@ -34,6 +34,8 @@ vector<int> getSuffixArray(const string& s)
         Comparator compareUsing2T(group,t);
         sort(perm.begin(), perm.end(), compareUsing2T);
         
+        //2t글자가 n을 넘는다면 접미사 배열 완성
+        //구조체에는 아직 t*=2를 대입하지 않았다!!!
         t*=2;
         if(t>=n) break;
         
