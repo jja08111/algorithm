@@ -77,3 +77,4 @@ vector<int> getSuffixArray(const vector<int>& s)
 
 # 참고 
 - https://blog.naver.com/PostView.nhn?blogId=kks227&logNo=221028710658   
+- 구종만, "알고리즘 문제 해결 전략", 2012, 인사이트
