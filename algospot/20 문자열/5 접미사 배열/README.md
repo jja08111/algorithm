@@ -65,9 +65,9 @@ vector<int> getSuffixArray(const vector<int>& s)
         newGroup[perm[0]]=0;
         for(int i=1;i<n;++i)
             if(compareUsing2T(perm[i-1],perm[i]))
-                newGroup[i]=newGroup[i-1]+1;
+                newGroup[perm[i]]=newGroup[perm[i-1]]+1;
             else
-                newGroup[i]=newGroup[i-1];
+                newGroup[perm[i]]=newGroup[perm[i-1]];
         group=newGroup;
     }
     return perm;
