@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <map>
 using namespace std;
 
 struct Comparator {
@@ -16,30 +15,18 @@ struct Comparator {
     }
 };
 
-inline int index(char a)
-{
-    return (int)(a-'a');
-}
-
-int getLongestHabit(const string& s, const int k)
+vector<int> getSuffixArray(const string& s)
 {
     int n=s.size();
     int t=1;
     vector<int> group(n+1);
-    vector<int> groupSize(index('z')+1, 0);
     for(int i=0;i<n;++i)
-    {
         group[i]=s[i];
-        groupSize[index(s[i])]++;
-    }
     group[n]=-1;
     
     vector<int> perm(n);
     for(int i=0;i<n;++i)
         perm[i]=i;
-    
-    
-    
     while(t<n)
     {
         Comparator compareUsing2T(group,t);
@@ -52,17 +39,35 @@ int getLongestHabit(const string& s, const int k)
         newGroup[n]=-1;
         newGroup[perm[0]]=0;
         for(int i=1;i<n;++i)
-            if(compareUsing2T(perm[i-1], perm[i]))
-                newGroup[i]=newGroup[i-1]+1;
+            if(compareUsing2T(perm[i-1],perm[i]))
+                newGroup[perm[i]]=newGroup[perm[i-1]]+1;
             else
-            {
-                newGroup[i]=newGroup[i-1];
-                
-            }
+                newGroup[perm[i]]=newGroup[perm[i-1]];
         group=newGroup;
     }
-    return 0;
+    return perm;
 }
+
+int commonPrefix(const string& s, int i, int j)
+{
+    int n=s.size();
+    int ret=0;
+    while(i<n && j<n && s[i]==s[j])
+    {
+        ret++; i++; j++;
+    }
+    return ret;
+}
+
+int getLongestFrequent(int k, const string& s)
+{
+    vector<int> a=getSuffixArray(s);
+    int ret=0;
+    for(int i=0;i+k<=s.size();++i)
+        ret=max(ret,commonPrefix(s,a[i],a[i+k-1]));
+    return ret;
+}
+
 
 int main()
 {
@@ -74,8 +79,8 @@ int main()
         string s;
         cin>>k>>s;
         
-        cout<<getLongestHabit(s,k)<<endl;
+        cout<<getLongestFrequent(k,s)<<endl;
+        
     }
-
     return 0;
 }
