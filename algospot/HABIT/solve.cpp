@@ -68,7 +68,6 @@ int getLongestFrequent(int k, const string& s)
     return ret;
 }
 
-
 int main()
 {
     int testCase;
