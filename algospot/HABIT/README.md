@@ -76,7 +76,17 @@ int getLongestFrequent(int k, const string& s)
 ```
 
 # 회고 
-접미사 배열이 정렬되어 있다는 부분을 잘 활용한 문제이다.  
+- 접미사 배열이 정렬되어 있다는 부분을 잘 활용한 문제이다.  
 이를 모르고 접미사 배열을 그룹화 할때마다 그룹의 개수를 일일이 계산하여 구하려 했으나 말도 안되는 방법이었다.  
 
-
+- 접미사 배열을 만드는 코드에서 오타가 발생했었다.  
+    아래 주석내의 문장 같이 작성하면 그룹화가 전혀 안된다.  
+    perm[]의 순서대로 접근해야 하기 때문이다.  
+```c++
+vector<int> newGroup(n+1);
+newGroup[n]=-1;
+newGroup[perm[0]]=0;
+if(compareUsing2T(perm[i-1],perm[i]))
+    //invalid--> newGroup[i]=newGroup[i-1]+1;
+    newGroup[perm[i]]=newGroup[perm[i-1]]+1;
+```
