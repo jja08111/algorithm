@@ -5,7 +5,7 @@
 using namespace std;
 
 struct Comparator {
-    vector<int> group;
+    const vector<int>& group;
     int t;
     Comparator(const vector<int>& _group, int _t) : group(_group), t(_t) {}
     bool operator () (int a, int b)
