@@ -60,9 +60,9 @@ vector<int> getLCP(const string& s, const vector<int>& suffixArray)
     
     for(int i=0;i<n;++i)
     {
-        if(pos[i]==n-1) continue;
+        if(pos[i]==0) continue;
         
-        for(int j=suffixArray[pos[i]+1]; s[i+k]==s[j+k]; k++);
+        for(int j=suffixArray[pos[i]-1]; s[i+k]==s[j+k]; k++);
         
         lcp[pos[i]]=k;
         k=max(k-1,0);
@@ -83,7 +83,7 @@ int main()
         printf("%d ",suffixArray[i]+1);
     
     cout<<endl<<"x ";
-    for(int i=0;i<n-1;++i)
+    for(int i=1;i<n;++i)
         printf("%d ",lcp[i]);
 
     return 0;
