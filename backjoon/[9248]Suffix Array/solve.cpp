@@ -55,16 +55,21 @@ vector<int> getLCP(const string& s, const vector<int>& suffixArray)
     vector<int> lcp(n,0);
     vector<int> pos(s.size());
     
+    //pos[접미사]=접미사 배열 위치
     for(int i=0;i<n;++i)
         pos[suffixArray[i]]=i;
     
+    //전체 글자부터 전체 글자에서 길이가 1인 접미사까지 lcp를 만든다. 
     for(int i=0;i<n;++i)
     {
+        //접미사 배열의 첫 번째이면 건너 뛴다.
         if(pos[i]==0) continue;
         
+        //s[i...]접미사와 바로 윗 그룹 접미사의 공통 접두사의 길이 k를 구한다. 
         for(int j=suffixArray[pos[i]-1]; s[i+k]==s[j+k]; k++);
         
         lcp[pos[i]]=k;
+        //1글자씩 다음 글자가 줄어드니 겹치는 부분도 1개 줄어든다.
         k=max(k-1,0);
     }
     return lcp;
