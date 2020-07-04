@@ -60,6 +60,62 @@ Node* insert(Node* root, Node* node)
     return root;
 }
 
+Node* merge(Node* a, Node* b)
+{
+    if(a==NULL) return b;
+    if(b==NULL) return a;
+    if(a->priority < b->priority)
+    {
+        b->setLeft(merge(a,b->left));
+        return b;
+    }
+    a->setRight(merge(a->right,b));
+    return a;
+}
+
+Node* erase(Node* root, KeyType key)
+{
+    if(root==NULL)
+        return root;
+    
+    if(root->key == key)
+    {
+        Node* ret=merge(root->left,root->right);
+        delete root;
+        return ret;
+    }
+    if(key < root->key)
+        root->setLeft(erase(root->left,key));
+    else
+        root->setRight(erase(root->right,key));
+    return root;
+}
+
+Node* kth(Node* root, int k)
+{
+    int leftSize=0;
+    if(root->left != NULL)
+        leftSize=root->left->size;
+    
+    if(k<=leftSize)
+        return kth(root->left,k);
+    if(k==leftSize+1)
+        return root;
+    return kth(root->right,k-left-1);
+}
+
+int countLessThan(Node* root, KeyType key)
+{
+    if(root==NULL)
+        return 0;
+    
+    if(root->key >= key)
+        return countLessThan(root->left, key);
+    
+    int ls=(root->left ? root->left->size : 0);
+    return ls+1+countLessThan(root->right,key);
+}
+
 int main()
 {
     
