@@ -10,7 +10,7 @@ struct Node {
     int priority, size;
     
     Node *left, *right;
-    Node(const KeyType& _key) : Key(_key), priority(rand()), 
+    Node(const KeyType& _key) : key(_key), priority(rand()), 
         size(1), left(NULL), right(NULL) {
     }
     
@@ -36,7 +36,7 @@ NodePair split(Node* root, KeyType key)
         root->setRight(rs.first);
         return NodePair(root,rs.second);
     }
-    NodePair ls=split(root)
+    NodePair ls=split(root->left,key);
     root->setLeft(ls.second);
     return NodePair(ls.first,root);
 }
@@ -101,7 +101,7 @@ Node* kth(Node* root, int k)
         return kth(root->left,k);
     if(k==leftSize+1)
         return root;
-    return kth(root->right,k-left-1);
+    return kth(root->right,k-leftSize-1);
 }
 
 int countLessThan(Node* root, KeyType key)
