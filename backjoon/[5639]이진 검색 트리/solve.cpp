@@ -9,8 +9,6 @@ struct Node {
     Node(const int& _key) : key(_key), left(NULL), right(NULL) {}
 };
 
-typedef pair<Node*,Node*> NodePair;
-
 Node* insert(Node* root, Node* node)
 {
     if(root==NULL)
