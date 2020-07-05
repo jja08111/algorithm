@@ -15,23 +15,23 @@ int getDiameter(int here)
 {
     visited[here]=true;
     
-    set<int> ret;
+    set<int> heights;
     for(int i=0;i<adj[here].size();++i)
     {
         int cand=adj[here][i].first;
         int dist=adj[here][i].second;
         if(!visited[cand])
         {
-            ret.insert(dist+getDiameter(cand));
+            heights.insert(dist+getDiameter(cand));
         }
     }
     
-    if(ret.empty())
+    if(heights.empty())
         return 0;
         
-    set<int>::iterator it=ret.end();
+    set<int>::iterator it=heights.end();
     int back = *(--it);
-    if(ret.size()>=2)
+    if(heights.size()>=2)
     {
         int back2 = *(--it);
         longest=max(longest,back+back2);
