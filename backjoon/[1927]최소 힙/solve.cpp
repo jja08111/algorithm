@@ -7,7 +7,7 @@ int main()
 {
     int n;
     cin>>n;
-    //내림차순 
+    //오름차순 저장  
     priority_queue<int, vector<int>, greater<int> > pq;
     while(n--)
     {
