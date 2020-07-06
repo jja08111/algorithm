@@ -63,6 +63,7 @@ vector<int> getSuffixArray(const string& s)
 겹치는 부분 overlap은 다음 문자열, 즉 접미사 한 글자를 없앤 다음 접미사는 overlap-1일 것이다.  
 
 전체 문자열에서 하나씩 줄인 접미사들로 접근하니 suffixArray의 역함수를 만들어 이용하였다.  
+overlap을 계산하는 반복문에서 별도의 범위를 제한하지 않았는데, 그 이유는 접미사들은 절대로 같을 수가 없기 때문이다.
 ```c++
 int getLongestPreffix(const string& s, const vector<int>& suffixArr)
 {
