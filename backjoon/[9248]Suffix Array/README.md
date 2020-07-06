@@ -22,7 +22,9 @@ int commonPrefix(const string& s, int i, int j)
 그 다음 글자인 ississipi와 그 바로 앞 접미사 배열 위치에 있는 issipi의 공통 접두사를 계산하면 k=4이다.  
 그 다음 글자인 ssissipid와 그 바로 앞 접미사 배열 위치에 있는 ssipi의 공통 접두사 길이는 이전에 k가 4였으니 1을 빼서 3부터 시작하는 것이다.  
 바로 이 부분이 시간을 단축하는데 핵심이라고 볼 수 있다.  
-여기서 접미사의 접미사 배열에서 순위를 알기 위해 역변환 배열인 pos를 선언한 것을 눈여겨 볼 수 있다.  
+접미사이기 때문에 접두사 한 글자를 빼도 다른 접미사가 되는 것을 이용하는 것이다.  
+
+아래 코드에서 접미사의 접미사 배열에서 순위를 알기 위해 역변환 배열인 pos를 선언한 것을 눈여겨 볼 수 있다.  
 ```c++
 vector<int> getLCP(const string& s, const vector<int>& suffixArray) 
 {
