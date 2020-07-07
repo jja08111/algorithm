@@ -10,7 +10,7 @@ long long getMaxArea()
 {
     stack<int> remaining;
     h.push_back(-1);
-    long long int ret=0;
+    long long ret=0;
     for(int i=0;i<h.size();++i)
     {
         while(!remaining.empty() && h[remaining.top()]>=h[i])
