@@ -21,7 +21,7 @@ struct RMQ {
         int mid=(left+right)/2;
         int leftMin=init(array,left,mid,node*2);
         int rightMin=init(array,mid+1,right,node*2+1);
-        return rangeMin[node]=mid(leftMin,rightMin);
+        return rangeMin[node]=min(leftMin,rightMin);
     }
     
     int query(int left, int right, int node, int nodeLeft, int nodeRight)
