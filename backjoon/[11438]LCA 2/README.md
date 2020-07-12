@@ -2,7 +2,7 @@
 최소 공통 조상(LCA)를 찾는 문제이다.  
 알고스팟 사이트의 [FAMILYTREE](https://algospot.com/judge/problem/read/FAMILYTREE) 문제와 유사하다.  
 [해결 방법](https://github.com/jja08111/algorithm/tree/master/algospot/FAMILYTREE)은 거의 유사하지만 트리를 탐색하며 trip을 형성하는 과정이 조금 다르다.  
-그리고 찾는 값이 공통 최소 조상을 지나는 경로의 길이가 아닌 LCA 그 자체 이다.  
+그리고 찾는 값이 LCA를 지나는 경로의 길이가 아닌 LCA 그 자체 이다.  
 
 trip을 형성하는 방법이 다른 이유는 입력에 간선으로 이어지는 두 정점의 값들로 주어지기 때문이다.  
 그렇기 때문에 visited 배열을 만들어 traverse에서 이미 방문한 경우 체크해서 DFS를 해야한다.   
