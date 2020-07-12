@@ -27,7 +27,7 @@ struct RMQ {
             return INT_MAX;
         if(left<=nodeLeft && nodeRight<=right)
             return rangeMin[node];
-        int mid=(left+right)/2;
+        int mid=(nodeLeft+nodeRight)/2;
         return min(query(left,right,node*2,nodeLeft,mid),query(left,right,node*2+1,mid+1,nodeRight));
     }
     int query(int left, int right) {
@@ -68,17 +68,17 @@ RMQ* prepareRMQ()
 {
     nextSerial=0;
     vector<int> trip;
+    // root부터 시작
     traverse(1,0,trip);
     return new RMQ(trip);
 }
 
-int distance(RMQ* rmq, int u, int v)
+int getLCA(RMQ* rmq, int u, int v)
 {
     int lu=locInTrip[u], lv=locInTrip[v];
     if(lu>lv)
         swap(lu,lv);
-    int lca=serial2no[rmq->query(lu,lv)];
-    return depth[u]+depth[v]-2*depth[lca];
+    return serial2no[rmq->query(lu,lv)];
 }
 
 int main()
@@ -98,7 +98,7 @@ int main()
     {
         int u,v;
         scanf("%d %d",&u,&v);
-        printf("%d\n",distance(rmq,u,v));
+        printf("%d\n",getLCA(rmq,u,v));
     }
     return 0;
 }
