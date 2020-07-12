@@ -1,5 +1,5 @@
  # 해결 
-처음에 보자마자 떠오른 생각은 "두 노드의 공통 조상 중 최소값을 찾으면 되는데 어떻게 RMQ를 이용하지?" 이었다.  
+처음에 보자마자 떠오른 생각은 "두 노드의 공통 조상 중 최소값을 찾으면 되는데 어떻게 [RMQ](https://github.com/jja08111/algorithm/tree/master/algospot/MORDOR)를 이용하지?" 이었다.  
 이 문제는 트리에서 두 노드의 최소 공통 조상(least/lowest common ancestor, LCA)를 찾는 문제와 밀접하게 연관되어 있다.  
 그렇다면 어떻게 LCA를 찾는다는 말인가?  
 
