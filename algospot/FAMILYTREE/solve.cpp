@@ -47,21 +47,26 @@ const int MAX_N=100000;
 int n;
 vector<int> child[MAX_N];
 int no2serial[MAX_N], serial2no[MAX_N];
+// trip에서 노드가 처음으로 등장하는 위치 저장, 노드의 깊이 저장(index는 node이다!!)
 int locInTrip[MAX_N], depth[MAX_N];
 int nextSerial;
 
 void traverse(int here, int d, vector<int>& trip)
 {
+    // 첫 방문시 바로 일련 번호 부여
     no2serial[here]=nextSerial;
     serial2no[nextSerial]=here;
     ++nextSerial;
+    // 현재 노드의 깊이 저장
     depth[here]=d;
     // trip에서 here노드가 처음 등장하는 위치를 저장
     locInTrip[here]=trip.size();
     trip.push_back(no2serial[here]);
+    // 모든 자식 노드를 방문
     for(int i=0;i<child[here].size();++i)
     {
         traverse(child[here][i],d+1,trip);
+        // 자식 노드를 방문하고 현재 노드로 돌아올 때마다 다시 추가하기
         trip.push_back(no2serial[here]);
     }
 }
@@ -69,6 +74,7 @@ void traverse(int here, int d, vector<int>& trip)
 RMQ* prepareRMQ()
 {
     nextSerial=0;
+    // 순회 과정에서 만나는 노드들의 일련번호를 담는다.
     vector<int> trip;
     traverse(0,0,trip);
     return new RMQ(trip);
@@ -76,6 +82,7 @@ RMQ* prepareRMQ()
 
 int distance(RMQ* rmq, int u, int v)
 {
+    // trip 배열에서 u와 v의 첫 출현 위치를 찾는다.  
     int lu=locInTrip[u], lv=locInTrip[v];
     if(lu>lv)
         swap(lu,lv);
