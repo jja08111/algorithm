@@ -21,4 +21,31 @@ long long countMoves(const vector<int>& A)
 
 # 회고 
 펜윅트리를 구현시 pos를 ++연산을 하지 않아 시간초과가 일어났다.  
-그 이유를 분석해보니 비트 연산이 제대로 되지 않기 때문이다.  
+그 이유를 분석해보니 0이 수열에 있을 경우 비트 연산이 제대로 되지 않기 때문이었다.  
+```c++
+struct FenwickTree 
+{
+    vector<int> tree;
+    FenwickTree(int n) : tree(n+1) {}
+    int sum(int pos) 
+    {
+        ++pos; ///////////////
+        int ret=0;
+        while(pos>0) 
+        {
+            ret+=tree[pos];
+            pos&=(pos-1);
+        }
+        return ret;
+    }
+    void add(int pos, int val) 
+    {
+        ++pos; ////////////////
+        while(pos<tree.size()) 
+        {
+            tree[pos]+=val;
+            pos+=(pos&-pos);
+        }
+    }
+};
+```
