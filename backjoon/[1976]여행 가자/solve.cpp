@@ -55,6 +55,7 @@ int main()
         {
             int tmp;
             scanf("%d",&tmp);
+            // 두 쌍을 모두 확인하지 않는다.
             if(u<v && tmp==1)
                 tree.merge(u,v);
         }
