@@ -28,7 +28,7 @@ TrieNode* readInput(int words)
     return trie;
 }
 ```
-
+----------------------
 삽입하는 함수는 첫 번째 단어가 등록되어 있지 않았을 때 바로 현재 문자열의 id를 넣는다. 전처리 과정 중 정렬되었기 때문에 문제없이 first가 갱신된다.  
 그 후 문자열이 종료되면 terminal에 id를 등록한다. 문자열이 끝나지 않았다면 다음 문자로 넘어간다.  
 
@@ -85,7 +85,7 @@ struct TrieNode {
     }
 };
 ```
-
+------------------------
 사전을 나타내는 trie가 주어질 때, 단어 word를 타이핑 하는 수를 계산하는 함수는 문자열이 사전에 없는 경우를 유의하여 작성해야 한다.  
 ```c++
 int countKeys(TrieNode* trie, const char* word)
