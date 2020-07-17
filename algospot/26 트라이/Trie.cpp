@@ -35,7 +35,7 @@ struct TrieNode {
             return NULL;
         return children[next]->find(key+1);
     }
-}
+};
 
 int main()
 {
