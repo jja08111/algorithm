@@ -65,13 +65,17 @@ void computeFailFunc(TrieNode* root)
             if(!child)
                 continue;
             
+            // 1레벨 노드의 실패 연결은 항상 루트
             if(here==root)
                 child->fail=root;
+            // 아닌 경우 부모의 실패 연결을 따라가면서 실패 연결을 찾는다.
             else
             {
                 TrieNode* t=here->fail;
+                // 루트에 도달하지 않았거나 다음 글자(edge)로 표시된 간선이 없는 경우 반복
                 while(t!=root && t->children[edge]==NULL)
                     t=t->fail;
+                // edge글자가 있는 경우 해당 노드로 이동한다.
                 if(t->children[edge])
                     t=t->children[edge];
                 child->fail=t;
