@@ -31,14 +31,6 @@ struct TrieNode {
             children[next]->insert(key+1,id);
         }
     }
-    TrieNode* find(const char* key) {
-        if(*key==0)
-            return this;
-        int next=toNumber(*key);
-        if(children[next]==NULL)
-            return NULL;
-        children[next]->find(key+1);
-    }
 };
 
 // 트라이가 주어질 때 각 노드에 대해 실패 연결과 출력 문자열 목록을 계산한다.
