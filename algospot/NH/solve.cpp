@@ -11,6 +11,7 @@ struct TrieNode
 {
     TrieNode* children[ALPHABET];
     TrieNode* fail;
+    // 현재 노드에서 문자를 추가시 이동할 다음 노드
     TrieNode* next[ALPHABET];
     vector<int> output;
     int terminal, no;
@@ -56,11 +57,14 @@ void computeFailFunc(TrieNode* root)
             if(!child)
                 continue;
             
+            // 1단계 깊이에서는 실패시 루트로 이동한다.
             if(here==root)
                 child->fail=root;
+            // 아닌 경우 다음 노드를 찾는다.
             else
             {
                 TrieNode* failure=here->fail;
+                // edge간선이 있거나 루트가 아닐 때까지 이동한다.
                 while(failure!=root && failure->children[edge]==NULL)
                     failure=failure->fail;
                 if(failure->children[edge])
@@ -68,7 +72,9 @@ void computeFailFunc(TrieNode* root)
                 
                 child->fail=failure;
             }
+            // 이전에 만들어 놓은 결과들을 복사한다.
             child->output=child->fail->output;
+            // 문자열 끝인 경우 새로 문자열을 추가한다.
             if(child->terminal!=-1)
                 child->output.push_back(child->terminal);
             q.push(child);
@@ -76,6 +82,8 @@ void computeFailFunc(TrieNode* root)
     }
 }
 
+// 해당 노드에서 a~z 중 한 개의 문자가 추가될 경우 
+// 이동하게 될 노드를 찾는다.
 void computeTransition(TrieNode* here, int& nodeCounter)
 {
     here->no=nodeCounter++;
