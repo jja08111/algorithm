@@ -9,11 +9,10 @@ int toNumber(char ch) { return ch-'a'; }
 
 struct TrieNode {
     TrieNode* children[ALPHABET];
-    int terminal;
     // 실패 연결
     TrieNode* fail;
-    vector<int> output;
-    TrieNode() : terminal(-1) {
+    int output;
+    TrieNode() : output(0) {
         memset(children,0,sizeof(children));
     }
     ~TrieNode() {
@@ -21,14 +20,14 @@ struct TrieNode {
             if(children[i])
                 delete children[i];
     }
-    void insert(const char* key, int id) {
+    void insert(const char* key) {
         if(*key==0)
-            terminal=id;
+            output=1;
         else {
             int next=toNumber(*key);
             if(children[next]==NULL)
                 children[next]=new TrieNode();
-            children[next]->insert(key+1,id);
+            children[next]->insert(key+1);
         }
     }
 };
@@ -61,9 +60,7 @@ void computeFailFunc(TrieNode* root)
                     t=t->children[edge];
                 child->fail=t;
             }
-            child->output=child->fail->output;
-            if(child->terminal!=-1)
-                child->output.push_back(child->terminal);
+            child->output+=child->fail->output;
             q.push(child);
         }
     }
@@ -71,7 +68,6 @@ void computeFailFunc(TrieNode* root)
 
 bool ahoCorasick(const string& s, TrieNode* root)
 {
-    int ret=0;
     TrieNode* state=root;
     for(int i=0;i<s.size();++i)
     {
@@ -82,9 +78,10 @@ bool ahoCorasick(const string& s, TrieNode* root)
         if(state->children[chr])
             state=state->children[chr];
         
-        ret+=state->output.size();
+        if(state->output)
+            return true;
     }
-    return ret>0;
+    return false;
 }
 
 int main()
@@ -97,7 +94,7 @@ int main()
     {
         char buf[101];
         scanf("%s",buf);
-        trie->insert(buf,i);
+        trie->insert(buf);
     }
     
     computeFailFunc(trie);
