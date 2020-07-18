@@ -23,7 +23,7 @@ struct TrieNode {
     }
     void insert(const char* key, int id) {
         if(first==-1)
-            first=id
+            first=id;
         if(*key==0)
             terminal=id;
         else {
