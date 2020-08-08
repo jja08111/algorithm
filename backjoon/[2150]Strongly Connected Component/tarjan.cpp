@@ -52,6 +52,8 @@ void tarjanSCC()
     for(int i=1;i<adj.size();++i)
         if(discovered[i]==-1)
             dfs(i);
+    
+    sort(SCC.begin(), SCC.end());
 }
 
 int main()
@@ -67,7 +69,6 @@ int main()
     }
     
     tarjanSCC();
-    sort(SCC.begin(), SCC.end());
     
     cout<<sccCounter<<endl;
     for(int id=0;id<sccCounter;++id)
