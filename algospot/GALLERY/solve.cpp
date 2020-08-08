@@ -11,7 +11,7 @@ enum
 
 vector<int> adj[MAX_N];
 vector<bool> visited;
-int install;
+int installed, galleryNum;
 
 int dfs(int here)
 {
@@ -26,7 +26,7 @@ int dfs(int here)
     
     if(children[UNWATCHED])
     {
-        ++install;
+        ++installed;
         return INSTALLED;
     }
     if(children[INSTALLED])
@@ -34,6 +34,17 @@ int dfs(int here)
     return UNWATCHED;
 }
 
+int installCamera()
+{
+    visited=vector<bool>(galleryNum,false);
+    installed=0;
+    
+    for(int i=0;i<galleryNum;++i)
+        if(!visited[i] && dfs(i)==UNWATCHED)
+            installed++;
+    
+    return installed;
+}
 
 int main()
 {
@@ -41,13 +52,10 @@ int main()
     cin>>testCase;
     while(testCase--)
     {
-        int g,h;
-        cin>>g>>h;
+        int hallNum;
+        cin>>galleryNum>>hallNum;
         
-        visited=vector<bool>(g,false);
-        install=0;
-        
-        for(int i=0;i<h;++i)
+        for(int i=0;i<hallNum;++i)
         {
             int a,b;
             cin>>a>>b;
@@ -55,13 +63,11 @@ int main()
             adj[b].push_back(a);
         }
         
-        for(int i=0;i<g;++i)
-            if(!visited[i] && dfs(i)==UNWATCHED)
-                install++;
+        int ret=installCamera();
         
-        cout<<install<<endl;
+        cout<<ret<<endl;
         
-        for(int i=0;i<g;++i)
+        for(int i=0;i<galleryNum;++i)
             adj[i].clear();
     }
 
