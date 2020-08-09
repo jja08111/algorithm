@@ -36,7 +36,46 @@ i번 회의를 할 것인지 여부 A(i)
 
 위 내용을 변수 A(i)에 대해 각각 A(i)와 !A(i)를 표현하는 두개의 정점을 포함하는 방향 그래프를 만들고, 각 절마다 위의 표기에 따라 방향 간선을 추가하면 함의 그래프를 만들 수 있다.  
 함의 그래프(imlication graph)는 논리식에 포함된 변수들의 값에 대한 요구 조건을 표현한 그래프를 말한다.  
+```c++
+vector<vector<int> > adj;
+// 두 구간 a와 b가 서로 겹치지 않는지를 확인한다.
+bool disjoint(const pair<int,int>& a, const pair<int,int>& b)
+{
+    return a.second<=b.first || b.second<=a.first;
+}
 
+// meetings[]가 각 팀이 하고 싶어하는 회의 시간의 목록일 때,
+// 이를 2-SAT 문제로 변환한 뒤 함의 그래프를 생성한다.
+// i번 팀은 meetings[2*i] 혹은 meetings[2*i+1] 중 하나 시간에 회의실을 써야 한다.
+void makeGraph(const vector<pair<int,int> >& meetings)
+{
+    int vars=meetings.size();
+    // 그래프는 각 변수마다 두 개의 정점을 갖는다.
+    adj.clear(); adj.resize(vars*2);
+    for(int i=0;i<vars;i+=2)
+    {
+        // 각 팀은 i번 회의나 j번 회의 둘 중 하나는 해야 한다.
+        // (i or j) 절을 추가한다.
+        int j=i+1;
+        adj[i*2+1].push_back(j*2); // ~i -> j
+        adj[j*2+1].push_back(i*2); // ~j -> i
+        adj[i*2].push_back(j*2+1); // i -> ~j
+        adj[j*2].push_back(i*2+1); // j -> ~i
+    }
+    for(int i=0;i<vars;++i)
+        for(int j=0;j<i;++j)
+        {
+            // i번 회의와 j번 회의가 서로 겹칠 경우
+            if(!disjoint(meetings[i],meetings[j]))
+            {
+                // i번 회의가 열리지 않거나, j번 회의가 열리지 않아야 한다.
+                // (~i or ~j) 절을 추가한다.
+                adj[i*2].push_back(j*2+1); // i -> ~j
+                adj[j*2].push_back(i*2+1); // j -> ~i
+            }
+        }
+}
+```
 
 ## 함의 그래프를 이용해서 2-SAT 문제 해결
 
@@ -75,92 +114,6 @@ DAG는 들어오는 간선이 하나도 없는 정점이 항상 존재한다.
 
 주의할 점은 책에서는 함의 그래프를 형성할 때 (X || Y) 절에 대해 둘 다 참인 경우를 고려하지 않고 작성되어 있는 것이다.  
 ```c++
-#include <iostream>
-#include <vector>
-#include <stack>
-#include <algorithm>
-using namespace std;
-
-vector<vector<int> > adj;
-vector<int> discovered, sccId;
-stack<int> st;
-int sccCounter, vertexCounter;
-
-// 두 구간 a와 b가 서로 겹치지 않는지를 확인한다.
-bool disjoint(const pair<int,int>& a, const pair<int,int>& b)
-{
-    return a.second<=b.first || b.second<=a.first;
-}
-
-// meetings[]가 각 팀이 하고 싶어하는 회의 시간의 목록일 때,
-// 이를 2-SAT 문제로 변환한 뒤 함의 그래프를 생성한다.
-// i번 팀은 meetings[2*i] 혹은 meetings[2*i+1] 중 하나 시간에 회의실을 써야 한다.
-void makeGraph(const vector<pair<int,int> >& meetings)
-{
-    int vars=meetings.size();
-    // 그래프는 각 변수마다 두 개의 정점을 갖는다.
-    adj.clear(); adj.resize(vars*2);
-    for(int i=0;i<vars;i+=2)
-    {
-        // 각 팀은 i번 회의나 j번 회의 둘 중 하나는 해야 한다.
-        // (i or j) 절을 추가한다.
-        int j=i+1;
-        adj[i*2+1].push_back(j*2); // ~i -> j
-        adj[j*2+1].push_back(i*2); // ~j -> i
-        adj[i*2].push_back(j*2+1); // i -> ~j
-        adj[j*2].push_back(i*2+1); // j -> ~i
-    }
-    for(int i=0;i<vars;++i)
-        for(int j=0;j<i;++j)
-        {
-            // i번 회의와 j번 회의가 서로 겹칠 경우
-            if(!disjoint(meetings[i],meetings[j]))
-            {
-                // i번 회의가 열리지 않거나, j번 회의가 열리지 않아야 한다.
-                // (~i or ~j) 절을 추가한다.
-                adj[i*2].push_back(j*2+1); // i -> ~j
-                adj[j*2].push_back(i*2+1); // j -> ~i
-            }
-        }
-}
-
-int scc(int here)
-{
-    int ret=discovered[here]=vertexCounter++;
-    st.push(here);
-    for(int i=0;i<adj[here].size();++i)
-    {
-        int there=adj[here][i];
-        if(discovered[there]==-1)
-            ret=min(ret,scc(there));
-        else if(sccId[there]==-1)
-            ret=min(ret,discovered[there]);
-    }
-    if(ret==discovered[here])
-    {
-        while(true)
-        {
-            int t=st.top();
-            st.pop();
-            sccId[t]=sccCounter;
-            if(t==here) break;
-        }
-        sccCounter++;
-    }
-    return ret;
-}
-
-vector<int> tarjanSCC()
-{
-    discovered=sccId=vector<int>(adj.size(),-1);
-    sccCounter=vertexCounter=0;
-    for(int i=0;i<adj.size();++i)
-        if(discovered[i]==-1)
-            scc(i);
-    
-    return sccId;
-}
-
 // adj에 함의 그래프의 인접 리스트 표현이 주어질 떄, 2-SAT 문제의 답을 반환한다.
 vector<int> solve2SAT()
 {
@@ -194,40 +147,6 @@ vector<int> solve2SAT()
         value[variable]=!isTrue;
     }
     return value;
-}
-
-int main(void)
-{
-    int testCase;
-    cin>>testCase;
-    while(testCase--)
-    {
-        int n;
-        cin>>n;
-        
-        vector<pair<int,int> > meetings(2*n);
-        for(int i=0;i<n;++i)
-        {
-            int a,b,c,d;
-            cin>>a>>b>>c>>d;
-            meetings[2*i]=make_pair(a,b);
-            meetings[2*i+1]=make_pair(c,d);
-        }
-        
-        makeGraph(meetings);
-        vector<int> ret=solve2SAT();
-        
-        if(ret.empty())
-        {
-            cout<<"IMPOSSIBLE"<<endl;
-            continue;
-        }
-        cout<<"POSSIBLE"<<endl;
-        for(int i=0;i<n*2;++i)
-            if(ret[i])
-                cout<<meetings[i].first<<" "<<meetings[i].second<<endl;
-    }
-    return 0;
 }
 ```
 
