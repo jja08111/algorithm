@@ -50,6 +50,7 @@ int solve(const vector<int>& seq)
                 ++smaller;
         compressed[i]=smaller;
     }
+    // 만약 수열의 길이가 8이 안되면 채운다.
     if(n!=MAX_N)
         for(int i=n;i<MAX_N;++i)
             compressed[i]=i;
