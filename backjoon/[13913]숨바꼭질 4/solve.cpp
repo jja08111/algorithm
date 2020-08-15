@@ -3,13 +3,13 @@
 #include <vector>
 using namespace std;
 
-const int MAX=100000;
+const int MAX=100001;
 
 int n,k;
 
 inline bool inRange(int n)
 {
-    return 0<=n && n<=MAX;
+    return 0<=n && n<MAX;
 }
 
 int nextVertex(const int here, const int select)
@@ -29,7 +29,7 @@ int nextVertex(const int here, const int select)
 
 vector<int> bfs()
 {
-    vector<int> parent(MAX+1,-1);
+    vector<int> parent(MAX,-1);
     queue<int> q;
     q.push(n);
     parent[n]=n;
