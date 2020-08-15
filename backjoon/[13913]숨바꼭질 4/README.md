@@ -111,7 +111,7 @@ vector<int> bfs()
         int here=q.front();
         q.pop();
         
-        // 목표하는 위치에 도달하면 종료 -> 올바른 위치
+        // (목표하는 위치에 도달하면 종료 -> 올바른 위치(while문 바깥에 return이 없다면)
         if(here==k)
             return parent;
         ///////////////////////////
@@ -134,5 +134,96 @@ vector<int> bfs()
     }
     //조건문 위치가 안에 위치하려면 아래의 반환 값이 필요함 
     //return parent;
+}
+```
+아래의 코드는 parent를 전역으로 선언하여 구분한 코드이다.  
+```c++
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <cstring>
+using namespace std;
+
+const int MAX=100001;
+
+int n,k;
+int parent[MAX];
+
+inline bool inRange(int n)
+{
+    return 0<=n && n<MAX;
+}
+
+int nextVertex(const int here, const int select)
+{
+    int there;
+    switch(select)
+    {
+    case 0: there=here*2; break;
+    case 1: there=here-1; break;
+    case 2: there=here+1; break;
+    }
+    
+    if(inRange(there))
+        return there;
+    return -1;
+}
+
+void makeParent()
+{
+    memset(parent,-1,sizeof(parent));
+    queue<int> q;
+    q.push(n);
+    parent[n]=n;
+    
+    while(!q.empty())
+    {
+        int here=q.front();
+        q.pop();
+        
+        for(int i=0;i<3;++i)
+        {
+            int there=nextVertex(here,i);
+            if(there<0)
+                continue;
+            
+            if(parent[there]==-1)
+            {
+                parent[there]=here;
+                if(there==k)
+                    return;
+                q.push(there);
+            }
+        }
+    }
+}
+
+vector<int> getReverseRoute()
+{
+    makeParent();
+    vector<int> route;
+    
+    int here=k;
+    while(parent[here]!=here)
+    {
+        route.push_back(here);
+        here=parent[here];
+    }
+    route.push_back(n);
+    
+    return route;
+}
+
+int main()
+{
+    cin>>n>>k;
+    
+    vector<int> ret=getReverseRoute();
+    
+    cout<<ret.size()-1<<endl;
+    for(int i=ret.size()-1;i>=0;--i)
+        cout<<ret[i]<<' ';
+    
+    return 0;
 }
 ```
