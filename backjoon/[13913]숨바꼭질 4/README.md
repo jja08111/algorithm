@@ -10,13 +10,13 @@ parent라는 배열을 이용하여 경로를 생성할 수 있으며 이미 발
 #include <vector>
 using namespace std;
 
-const int MAX=100000;
+const int MAX=100001;
 
 int n,k;
 
 inline bool inRange(int n)
 {
-    return 0<=n && n<=MAX;
+    return 0<=n && n<MAX;
 }
 
 int nextVertex(const int here, const int select)
@@ -36,7 +36,7 @@ int nextVertex(const int here, const int select)
 
 vector<int> bfs()
 {
-    vector<int> parent(MAX+1,-1);
+    vector<int> parent(MAX,-1);
     queue<int> q;
     q.push(n);
     parent[n]=n;
@@ -100,7 +100,7 @@ int main()
 ```c++
 vector<int> bfs()
 {
-    vector<int> parent(MAX+1,-1);
+    vector<int> parent(MAX,-1);
     queue<int> q;
     q.push(n);
     parent[n]=n;
