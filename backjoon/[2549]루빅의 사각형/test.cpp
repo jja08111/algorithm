@@ -38,17 +38,6 @@ public:
                 tile[i][j]=n;
             }
     }
-    /*
-    void showState() const
-    {
-        for(int y=0;y<4;++y)
-        {
-            for(int x=0;x<4;++x)
-                cout<<tile[y][x]<<' ';
-            cout<<endl;
-        }
-        cout<<"---------------"<<endl;
-    }*/
     // type =1 : 행 오른쪽으로 이동, =2 열 아래로 이동
     // pos번째 인덱스의 이동
     State moveTile(int type, int pos, int count)
@@ -114,14 +103,24 @@ int incr(int x)
     return x+1;
 }
 
+map<State,State> parent;
+map<State,int> choice;
+// <양방향 탐색 도중 중간에서 만나는 지점, <그것의 부모, 부모로 가는 변환> >
+pair<State,pair<State,int> > pivot;
+
 int bidirectional(State start, State finish)
 {
     map<State, int> c;
     queue<State> q;
+    
     if(start==finish)
         return 0;
+    
+    parent[start]=start;
+    parent[finish]=finish;
     q.push(start); c[start]=1;
     q.push(finish); c[finish]=-1;
+    
     while(!q.empty())
     {
         State here=q.front();
@@ -129,17 +128,64 @@ int bidirectional(State start, State finish)
         vector<State> adjacent=here.getAdjacent();
         for(int i=0;i<adjacent.size();++i)
         {
-            map<State,int>::iterator it=c.find(adjacent[i]);
+            State& there=adjacent[i];
+            map<State,int>::iterator it=c.find(there);
             if(it==c.end())
             {
-                c[adjacent[i]]=incr(c[here]);
-                q.push(adjacent[i]);
+                // 경로 형성
+                parent[there]=here;
+                choice[there]=i;
+                
+                c[there]=incr(c[here]);
+                q.push(there);
             }
+            // 양방향 탐색 도중 중간에서 만난 경우
             else if(sgn(it->second) != sgn(c[here]))
+            {
+                pivot.first=there;
+                pivot.second.first=here;
+                // 방향이 반대이니 역으로 저장해야 한다.
+                pivot.second.second=i;
                 return abs(it->second)+abs(c[here])-1;
+            }
         }
     }
     return -1;
+}
+
+void convert(int n)
+{
+    if(n<12)
+        cout<<1<<' ';
+    else
+    {
+        cout<<2<<' ';
+        n-=12;
+    }
+    cout<<(n/3)+1<<' '<<(n%3)+1<<endl;
+}
+
+void printHowToMove()
+{
+    vector<int> frontRoute;
+    
+    State here=pivot.first;
+    while(!(here==parent[here]))
+    {
+        frontRoute.push_back(choice[here]);
+        here=parent[here];
+    }
+    reverse(frontRoute.begin(), frontRoute.end());
+    for(int i=0;i<frontRoute.size();++i)
+        convert(frontRoute[i]);
+    
+    here=pivot.second.first;
+    convert(pivot.second.second);
+    while(!(here==parent[here]))
+    {
+        convert(choice[here]);
+        here=parent[here];
+    }
 }
 
 int main()
@@ -148,7 +194,8 @@ int main()
     start.inputTile();
     vector<State> s=start.getAdjacent();
     
-    cout<<bidirectional(start,finish);
+    cout<<bidirectional(start,finish)<<endl;
+    printHowToMove();
     
     return 0;
 }
