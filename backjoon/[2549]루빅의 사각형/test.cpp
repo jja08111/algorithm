@@ -175,12 +175,13 @@ void printHowToMove()
 {
     deque<int> route;
     
+    // 앞 부분 경로 저장
     while(!(front==parent[front]))
     {
         route.push_front(choice[front]);
         front=parent[front];
     }
-    
+    // 중간과 뒷 부분 경로 저장
     route.push_back(midAdj);
     while(!(back==parent[back]))
     {
