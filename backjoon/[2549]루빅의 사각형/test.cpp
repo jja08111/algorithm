@@ -9,7 +9,7 @@ using namespace std;
 
 class State 
 {
-private:
+public:
     vector<int> tile[4];
 public:
     State()
@@ -38,6 +38,17 @@ public:
                 tile[i][j]=n;
             }
     }
+    /*
+    void showState() const
+    {
+        for(int y=0;y<4;++y)
+        {
+            for(int x=0;x<4;++x)
+                cout<<tile[y][x]<<' ';
+            cout<<endl;
+        }
+        cout<<"---------------"<<endl;
+    }*/
     // type =1 : 행 오른쪽으로 이동, =2 열 아래로 이동
     // pos번째 인덱스의 이동
     State moveTile(int type, int pos, int count)
@@ -57,7 +68,7 @@ public:
     vector<State> getAdjacent() const
     {
         vector<State> adjacent;
-        adjacent.resize(24);
+        adjacent.reserve(24);
         for(int type=1;type<=2;++type)
             for(int pos=0;pos<4;++pos)
                 for(int count=1;count<=3;++count)
@@ -67,11 +78,17 @@ public:
                 }
         return adjacent;
     }
+    // map의 find가 이진 탐색 중 쓰일 연산자
     bool operator<(const State& rhs) const
     {
+        int thisNum=0, rhsNum=0;
         for(int i=0;i<4;++i)
             for(int j=0;j<4;++j)
-                return tile[i][j]<rhs.tile[i][j];
+            {
+                thisNum+=(i*4+j)*tile[i][j];
+                rhsNum+=(i*4+j)*rhs.tile[i][j];
+            }
+        return thisNum<rhsNum;
     }
     bool operator==(const State& rhs) const
     {
@@ -129,6 +146,7 @@ int main()
 {
     State start, finish;
     start.inputTile();
+    vector<State> s=start.getAdjacent();
     
     cout<<bidirectional(start,finish);
     
