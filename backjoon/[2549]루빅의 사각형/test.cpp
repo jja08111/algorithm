@@ -1,5 +1,3 @@
-/*
-https://coloredrabbit.tistory.com/60
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -8,7 +6,6 @@ https://coloredrabbit.tistory.com/60
 #include <cmath>
 #include <map>
 using namespace std;
-
 class State 
 {
 public:
@@ -72,14 +69,10 @@ public:
     // map의 find가 이진 탐색 중 쓰일 연산자
     bool operator<(const State& rhs) const
     {
-        int thisNum=0, rhsNum=0;
         for(int i=0;i<4;++i)
             for(int j=0;j<4;++j)
-            {
-                thisNum+=(i*4+j)*tile[i][j];
-                rhsNum+=(i*4+j)*rhs.tile[i][j];
-            }
-        return thisNum<rhsNum;
+                if(tile[i][j]!=rhs.tile[i][j])
+                    return tile[i][j]<rhs.tile[i][j];
     }
     bool operator==(const State& rhs) const
     {
@@ -90,35 +83,30 @@ public:
         return true;
     }
 };
-
 int sgn(int x) 
 {
     if(!x) 
         return 0;
     return x>0 ? 1 : -1;
 }
-
 int incr(int x)
 {
     if(x<0)
         return x-1;
     return x+1;
 }
-
 map<State,State> parent;
 map<State,int> choice;
 // <양방향 탐색 도중 중간에서 만나는 지점, <그것의 부모, 부모로 가는 변환> >
 State front,back;
 int midAdj;
 //pair<State,pair<State,int> > pivot;
-
 int convertReAdj(int n)
 {
     int tmp=1-(n%12)%3;
     tmp*=2;
     return n+tmp;
 }
-
 int bidirectional(State start, State finish)
 {
     map<State, int> c;
@@ -172,7 +160,6 @@ int bidirectional(State start, State finish)
     }
     return -1;
 }
-
 void convert(int n)
 {
     if(n<12)
@@ -184,7 +171,6 @@ void convert(int n)
     }
     cout<<(n/3)+1<<' '<<(n%3)+1<<endl;
 }
-
 void printHowToMove()
 {
     deque<int> route;
@@ -205,18 +191,13 @@ void printHowToMove()
     for(int i=0;i<route.size();++i)
         convert(route[i]);
 }
-
 int main()
 {
     State start, finish;
     start.inputTile();
-    vector<State> s=start.getAdjacent();
-    
+
     cout<<bidirectional(start,finish)<<endl;
     printHowToMove();
     
     return 0;
 }
-
-
-*/
