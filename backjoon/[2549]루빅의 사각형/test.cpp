@@ -1,4 +1,5 @@
 /*
+https://coloredrabbit.tistory.com/60
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -107,7 +108,9 @@ int incr(int x)
 map<State,State> parent;
 map<State,int> choice;
 // <양방향 탐색 도중 중간에서 만나는 지점, <그것의 부모, 부모로 가는 변환> >
-pair<State,pair<State,int> > pivot;
+State front,back;
+int midAdj;
+//pair<State,pair<State,int> > pivot;
 
 int bidirectional(State start, State finish)
 {
@@ -143,7 +146,7 @@ int bidirectional(State start, State finish)
             // 양방향 탐색 도중 중간에서 만난 경우
             else if(sgn(it->second) != sgn(c[here]))
             {
-                pivot.first=there;
+                midAdj=(c[here]>0) ? i : (i%12)%3;
                 pivot.second.first=here;
                 // 방향이 반대이니 역으로 저장해야 한다.
                 pivot.second.second=i;
@@ -168,25 +171,24 @@ void convert(int n)
 
 void printHowToMove()
 {
-    vector<int> frontRoute;
+    vector<int> route;
     
     State here=pivot.first;
     while(!(here==parent[here]))
     {
-        frontRoute.push_back(choice[here]);
+        route.push_front(choice[here]);
         here=parent[here];
     }
-    reverse(frontRoute.begin(), frontRoute.end());
-    for(int i=0;i<frontRoute.size();++i)
-        convert(frontRoute[i]);
     
-    here=pivot.second.first;
-    convert(pivot.second.second);
+    route.push_back(pivot.second.first);
     while(!(here==parent[here]))
     {
         convert(choice[here]);
         here=parent[here];
     }
+    
+    for(int i=0;i<route.size();++i)
+        convert(route[i]);
 }
 
 int main()
@@ -200,4 +202,5 @@ int main()
     
     return 0;
 }
+
 */
