@@ -112,6 +112,13 @@ State front,back;
 int midAdj;
 //pair<State,pair<State,int> > pivot;
 
+int convertReAdj(int n)
+{
+    int tmp=1-(n%12)%3;
+    tmp*=2;
+    return n+tmp;
+}
+
 int bidirectional(State start, State finish)
 {
     map<State, int> c;
@@ -138,7 +145,8 @@ int bidirectional(State start, State finish)
             {
                 // 경로 형성
                 parent[there]=here;
-                choice[there]=i;
+                // 방향이 반대인 경우 역으로 저장해야 한다.
+                choice[there]=(c[here]>0) ? i : convertReAdj(i);
                 
                 c[there]=incr(c[here]);
                 q.push(there);
@@ -146,10 +154,18 @@ int bidirectional(State start, State finish)
             // 양방향 탐색 도중 중간에서 만난 경우
             else if(sgn(it->second) != sgn(c[here]))
             {
-                midAdj=(c[here]>0) ? i : (i%12)%3;
-                pivot.second.first=here;
-                // 방향이 반대이니 역으로 저장해야 한다.
-                pivot.second.second=i;
+                if((it->second)>0)
+                {
+                    midAdj=convertReAdj(i);
+                    front=it->first;
+                    back=here;
+                }
+                else
+                {
+                    midAdj=i;
+                    front=here;
+                    back=it->first;
+                }
                 return abs(it->second)+abs(c[here])-1;
             }
         }
@@ -171,20 +187,19 @@ void convert(int n)
 
 void printHowToMove()
 {
-    vector<int> route;
+    deque<int> route;
     
-    State here=pivot.first;
-    while(!(here==parent[here]))
+    while(!(front==parent[front]))
     {
-        route.push_front(choice[here]);
-        here=parent[here];
+        route.push_front(choice[front]);
+        front=parent[front];
     }
     
-    route.push_back(pivot.second.first);
-    while(!(here==parent[here]))
+    route.push_back(midAdj);
+    while(!(back==parent[back]))
     {
-        convert(choice[here]);
-        here=parent[here];
+        convert(choice[back]);
+        back=parent[back];
     }
     
     for(int i=0;i<route.size();++i)
@@ -202,5 +217,6 @@ int main()
     
     return 0;
 }
+
 
 */
