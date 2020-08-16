@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstring>
 #include <cmath>
+#include <map>
 using namespace std;
 
 class State 
@@ -11,46 +12,52 @@ class State
 private:
     vector<int> tile[4];
 public:
-    State(bool isStart)
+    State()
     {
         for(int i=0;i<4;++i)
             for(int j=0;j<4;++j)
-            {
-                if(isStart)
-                {
-                    int n;
-                    cin>>n;
-                    tile[i].push_back(n);
-                }
-                else
-                    tile[i].push_back(4*i+j+1);
-            }
+                tile[i].push_back(4*i+j+1);
     }
-    // 복사 생성자
+    // 복사 생성자 
     State(const State& copy)
     {
         for(int i=0;i<4;++i)
         {
-            copy.tile[i]=vector<int>(4,0);
+            tile[i]=vector<int>(4,0);
             for(int j=0;j<4;++j)
-                copy.tile[i][j]=tile[i][j];
+                tile[i][j]=copy.tile[i][j];
         }
+    }
+    void inputTile()
+    {
+        for(int i=0;i<4;++i)
+            for(int j=0;j<4;++j)
+            {
+                int n;
+                cin>>n;
+                tile[i][j]=n;
+            }
     }
     // type =1 : 행 오른쪽으로 이동, =2 열 아래로 이동
     // pos번째 인덱스의 이동
     State moveTile(int type, int pos, int count)
     {
         while(count--)
+        {
             for(int i=3;i>0;--i)
+            {
                 if(type==1)
                     swap(tile[pos][i], tile[pos][i-1]);
-                else
+                else if(type==2)
                     swap(tile[i][pos], tile[i-1][pos]);
+            }
+        }
         return *this;
     }
     vector<State> getAdjacent() const
     {
         vector<State> adjacent;
+        adjacent.resize(24);
         for(int type=1;type<=2;++type)
             for(int pos=0;pos<4;++pos)
                 for(int count=1;count<=3;++count)
@@ -60,8 +67,20 @@ public:
                 }
         return adjacent;
     }
-    bool operator<(const State& rhs) const;
-    bool operator==(const State& rhs) const;
+    bool operator<(const State& rhs) const
+    {
+        for(int i=0;i<4;++i)
+            for(int j=0;j<4;++j)
+                return tile[i][j]<rhs.tile[i][j];
+    }
+    bool operator==(const State& rhs) const
+    {
+        for(int i=0;i<4;++i)
+            for(int j=0;j<4;++j)
+                if(tile[i][j]!=rhs.tile[i][j])
+                    return false;
+        return true;
+    }
 };
 
 int sgn(int x) 
@@ -108,9 +127,10 @@ int bidirectional(State start, State finish)
 
 int main()
 {
-    State start(true);
+    State start, finish;
+    start.inputTile();
     
-    
+    cout<<bidirectional(start,finish);
     
     return 0;
 }
