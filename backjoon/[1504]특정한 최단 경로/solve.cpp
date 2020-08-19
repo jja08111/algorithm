@@ -52,14 +52,10 @@ int main()
     cin>>via1>>via2;
     
     int middle=getMinRoute(via1,via2);
-    if(middle>=INF)
-    {
-        cout<<-1<<endl;
-        return 0;
-    }
     int ret=getMinRoute(1,via1)+middle+getMinRoute(via2,V);
     ret=min(ret,getMinRoute(1,via2)+middle+getMinRoute(via1,V));
-    if(ret>=INF)
+    
+    if(ret<0 || INF<=ret)
         cout<<-1<<endl;
     else
         cout<<ret<<endl;
