@@ -14,7 +14,7 @@ vector<int> destination;
 
 void readData()
 {
-    int vertexNum,m,t;
+    int m,t;
     cin>>vertexNum>>m>>t;
     cin>>start>>g>>h;
     for(int i=0;i<m;++i)
@@ -79,25 +79,17 @@ int main()
         vector<int> distG=getDist(g);
         vector<int> distH=getDist(h);
         
-        vector<pair<int,int> > ret;
-        int minDist=INF;
+        sort(destination.begin(),destination.end());
         for(int i=0;i<destination.size();++i)
         {
-            int cand=distStart[g]+edgeGH+distH[destination[i]];
-            ret.push_back(make_pair(destination[i],cand));
-            minDist=min(minDist,cand);
-        }
-        for(int i=0;i<destination.size();++i)
-        {
-            int cand=distStart[h]+edgeGH+distG[destination[i]];
-            ret.push_back(make_pair(destination[i],cand));
-            minDist=min(minDist,cand);
+            int dest=destination[i];
+            int minDist=distStart[dest];
+            
+            if((distStart[g]+edgeGH+distH[dest]==minDist) || 
+                (distStart[h]+edgeGH+distG[dest]==minDist))
+                cout<<dest<<' ';
         }
         
-        sort(ret.begin(),ret.end());
-        for(int i=0;i<ret.size();++i)
-            if(ret[i].second==minDist)
-                cout<<ret[i].first<<' ';
         cout<<endl;
         clearData();
     }
