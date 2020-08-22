@@ -4,12 +4,6 @@
 #include <cstring>
 using namespace std;
 
-inline int convert(char ch) {
-    if(ch=='(')
-        return 1;
-    return -1;
-}
-
 bool isCorrect(const string& s) {
     stack<char> opening;
     for(int i=0;i<s.size();++i) {
@@ -24,13 +18,10 @@ bool isCorrect(const string& s) {
     return opening.empty();
 }
 
-void reverse(string& s) {
-    for(int i=0;i<s.size();++i) {
-        if(s[i]=='(')
-            s[i]=')';
-        else
-            s[i]='(';
-    }
+string reverse(string s) {
+    for(int i=0;i<s.size();++i)
+        s[i]=(s[i]=='(') ? ')' : '(';
+    return s;
 }
 
 string solution(string p) {
@@ -41,7 +32,7 @@ string solution(string p) {
     // 문자열을 균형잡힌 괄호 문자열로 앞 뒤 나눈다.
     int idx=0, diff=0;
     while(idx!=p.size()) {
-        diff+=convert(p[idx]);
+        diff+=(p[idx]=='(') ? 1 : -1;
         ++idx;
         if(diff==0)
             break;
@@ -49,18 +40,10 @@ string solution(string p) {
     
     string first=p.substr(0,idx);
     string second=p.substr(idx);
-    string ret;
-    if(!isCorrect(first)) {
-        ret="("+solution(second)+")";
-        // u의 첫 번째와 마지막 문자를 제거한 뒤 뒤집어 붙인다.
-        string back=first.substr(1,first.size()-2);
-        reverse(back);
-        ret+=back;
-    }
-    else {
-        ret=first;
-        ret+=solution(second);
-    }
-        
-    return ret;
+    
+    if(isCorrect(first)) 
+        return first+solution(second);
+    
+    string back=first.substr(1,first.size()-2);
+    return "("+solution(second)+")"+reverse(back);
 }
