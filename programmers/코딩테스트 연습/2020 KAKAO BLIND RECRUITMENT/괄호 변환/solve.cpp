@@ -51,15 +51,14 @@ string solution(string p) {
     string second=p.substr(idx);
     string ret;
     if(!isCorrect(first)) {
-        ret="(";
-        ret+=solution(second)+")";
+        ret="("+solution(second)+")";
         // u의 첫 번째와 마지막 문자를 제거한 뒤 뒤집어 붙인다.
         string back=first.substr(1,first.size()-2);
         reverse(back);
         ret+=back;
     }
     else {
-        ret+=first;
+        ret=first;
         ret+=solution(second);
     }
         
