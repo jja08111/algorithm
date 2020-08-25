@@ -7,7 +7,7 @@
 이 부분은 reachable이라는 배열을 그래프 생성시 정점간에 연결여부를 저장하면 해결 할 수 있다.  
 
 2. **upper값이 underflow될 수 있다.**  
-왜 이러한 일이 발생하냐면 각 정점을 반복하여 돌리면 int 범위보다 더 낮을 값이 나오기 때문이다. [여기](https://www.acmicpc.net/board/view/55270)에서
+왜 이러한 일이 발생하냐면 각 정점을 반복하여 돌리면 int 범위보다 더 낮은 값이 나올 수 있기 때문이다. [여기](https://www.acmicpc.net/board/view/55270)에서
  잘 설명 되어있다.
 ```c++
 #include <iostream>
