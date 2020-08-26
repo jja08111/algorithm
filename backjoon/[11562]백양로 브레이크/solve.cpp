@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MAX_V=251;
+const int INF=987654321;
+
+int V;
+int adj[MAX_V][MAX_V];
+
+void makeGraph()
+{
+    int E;
+    cin>>V>>E;
+    for(int i=0;i<V;++i)
+        for(int j=0;j<V;++j)
+            adj[i][j]=INF;
+    
+    for(int i=0;i<E;++i)
+    {
+        int u,v;
+        bool isBidir;
+        cin>>u>>v>>isBidir;
+        --u; --v;
+        adj[u][v]=0;
+        adj[v][u]=isBidir ? 0 : 1;
+    }
+}
+
+void floyd()
+{
+    for(int i=0;i<V;++i)
+        adj[i][i]=0;
+    for(int k=0;k<V;++k)
+        for(int i=0;i<V;++i)
+            for(int j=0;j<V;++j)
+                adj[i][j]=min(adj[i][j],adj[i][k]+adj[k][j]);
+}
+
+int main()
+{
+    makeGraph();
+    floyd();
+    
+    int n;
+    cin>>n;
+    while(n--)
+    {
+        int s,e;
+        cin>>s>>e;
+        --s; --e;
+        cout<<adj[s][e]<<endl;
+    }
+    
+    return 0;
+}
