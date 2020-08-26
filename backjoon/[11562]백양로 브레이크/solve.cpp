@@ -14,23 +14,20 @@ void makeGraph()
     cin>>V>>E;
     for(int i=0;i<V;++i)
         for(int j=0;j<V;++j)
-            adj[i][j]=INF;
+            adj[i][j]=(i==j) ? 0 : INF;
     
     for(int i=0;i<E;++i)
     {
-        int u,v;
-        bool isBidir;
-        cin>>u>>v>>isBidir;
+        int u,v,isBidir;
+        scanf("%d %d %d",&u,&v,&isBidir);
         --u; --v;
         adj[u][v]=0;
-        adj[v][u]=isBidir ? 0 : 1;
+        adj[v][u]=(isBidir) ? 0 : 1;
     }
 }
 
 void floyd()
 {
-    for(int i=0;i<V;++i)
-        adj[i][i]=0;
     for(int k=0;k<V;++k)
         for(int i=0;i<V;++i)
             for(int j=0;j<V;++j)
@@ -47,9 +44,9 @@ int main()
     while(n--)
     {
         int s,e;
-        cin>>s>>e;
+        scanf("%d %d",&s,&e);
         --s; --e;
-        cout<<adj[s][e]<<endl;
+        printf("%d\n",adj[s][e]);
     }
     
     return 0;
