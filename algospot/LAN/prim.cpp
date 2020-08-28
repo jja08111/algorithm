@@ -19,12 +19,12 @@ int calcDistSqr(const int u, const int v)
 
 double prim()
 {
-  	vector<bool> added(V,false);
-  	vector<int> minDistSqr(V,INF), parent(V,-1);
-  	double ret=0;
-  	minDistSqr[0]=parent[0]=0;
-  	for(int it=0;it<V;++it)
-  	{
+    vector<bool> added(V,false);
+    vector<int> minDistSqr(V,INF), parent(V,-1);
+    double ret=0;
+    minDistSqr[0]=parent[0]=0;
+    for(int it=0;it<V;++it)
+    {
         int u=-1;
         for(int v=0;v<V;++v)
             if(!added[v] && (u==-1 || minDistSqr[u]>minDistSqr[v]))
@@ -42,11 +42,12 @@ double prim()
         {
             if(added[v])
                 continue;
+            
             int distSqr=adj[u][v]==INF ? calcDistSqr(u,v) : adj[u][v];
-            minDistSqr[v]=min(minDistSqr[v],distSqr); 
+            minDistSqr[v]=min(minDistSqr[v],distSqr);
         }
-  	} 
-  	return ret;
+    }
+    return ret;
 }
 
 int main()
