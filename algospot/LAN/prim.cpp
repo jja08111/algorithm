@@ -45,7 +45,7 @@ double prim()
             
             int distSqr=adj[u][v]==INF ? calcDistSqr(u,v) : adj[u][v];
             minDistSqr[v]=min(minDistSqr[v],distSqr);
-        }
+        } 
   	}
   	return ret;
 }
