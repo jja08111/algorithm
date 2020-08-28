@@ -35,22 +35,19 @@ const int MAX_V=501;
 int V;
 int pos[MAX_V][2];
 
-double kruskal(DisjointSet& sets)//vector<pair<int,int> >& selected)
+double kruskal(DisjointSet& sets)
 {
-    double ret=0;
-    //selected.clear();
+  	double ret=0;
     vector<pair<double,pair<int,int> > > edges;
     for(int u=0;u<V;++u)
-        for(int v=0;v<V;++v)
+        for(int v=u+1;v<V;++v)
         {
-            if(u==v) 
-                continue;
             double cost=sqrt(pow(pos[u][0]-pos[v][0],2)+pow(pos[u][1]-pos[v][1],2));
             edges.push_back(make_pair(cost,make_pair(u,v)));
         }
     sort(edges.begin(), edges.end());
     
-    for(int i=0;i<V;++i)
+    for(int i=0;i<edges.size();++i)
     {
         double cost=edges[i].first;
         int u=edges[i].second.first, v=edges[i].second.second;
@@ -66,7 +63,10 @@ int main()
 {
     int testCase;
     cin>>testCase;
+    
+    cout<<fixed;
     cout.precision(10);
+    
     while(testCase--)
     {
         int m;
@@ -86,7 +86,6 @@ int main()
             cin>>u>>v;
             sets.merge(u,v);
         }
-        
         
         cout<<kruskal(sets)<<endl;
     }
