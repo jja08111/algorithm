@@ -30,6 +30,7 @@ double prim()
             if(!added[v] && (u==-1 || minDistSqr[u]>minDistSqr[v]))
             {       
                 u=v;
+                // 0보다 작은 값은 없다.  
                 if(minDistSqr[u]==0) 
                     break;
             }
@@ -43,11 +44,7 @@ double prim()
                 continue;
             
             int distSqr=adj[u][v]==INF ? calcDistSqr(u,v) : adj[u][v];
-            if(minDistSqr[v]>distSqr)
-            {
-                parent[v]=u;
-                minDistSqr[v]=distSqr;
-            }
+            minDistSqr[v]=min(minDistSqr[v],distSqr);
         }
   	}
   	return ret;
