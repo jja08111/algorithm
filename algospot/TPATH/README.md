@@ -25,6 +25,7 @@ int minWeightDifference()
 {
     int ret=INF;
     for(int i=0;i<weights.size();++i)
+        // 함수 호출시 가중치의 인덱스만 넘긴다.
         ret=min(ret,minUpperBound(i)-weights[i]);
     return ret;
 }
@@ -58,5 +59,74 @@ int minUpperBound(int low)
             return edges[i].first;
     }
     return INF;
+}
+```
+
+---
+### 2. 무식한 방법에서 점점 최적화하기
+문제를 여러 경우의 수로 쪼갠 뒤 각각을 풀어내지 않고, 가능한 모든 하한과 상한의 쌍을 확인하는 방법이 있다.  
+하지만 이 방법을 그대로 쓰기에는 너무 느리다.  
+```c++
+int brute() 
+{
+    int ret=INF;
+    for(int lo=0;lo<weights.size();++lo)
+        for(int hi=lo;hi<weights.size();++hi)
+        {
+            if(hasPath(weights[lo],weights[hi]))
+            {
+                ret=min(ret,weights[hi]-weights[lo]);
+                break;
+            }
+        }
+    return ret;
+}
+```
+
+최적화 방법은 알고리즘이 동작하는 과정을 잘 알고 있으면 알 수 있다.  
+이미 어느 하한에 대해 상한이 경로가 없다는 것을 알게 되었는데 높아진 하한에 대해 이전에 종료된 상한의 값보다 낮은 상한의 경로가 있을 수 없다.  
+
+예를 들어 간선들의 가중치가 10,20,30,40,50 중의 하나라고 하자.  
+하한을 10으로 두었을 때 상한이 40인 경우 경로가 없다고 하자. 즉, 최소 상한이 40인 경우다.  
+이때 하한의 값을 20으로 올렸는데 상한이 30인 경우 경로가 존재할 수 있는가? 당연히 없다.   
+
+이러한 아이디어를 통해 중간의 기준 인덱스를 설정하여 그 값부터 시작해 나아가 최적화 할 수 있다.  
+```c++
+int optimized() 
+{
+    int ret=INF, foundPathUsing=0;
+    for(int lo=0;lo<weights.size();++lo)
+    {
+        bool foundPath=true;
+        for(int hi=foundPathUsing;hi<weights.size();++hi)
+            if(hasPath(weights[lo],weights[hi]))
+            {
+                ret=min(ret,weights[hi]-weights[lo]);
+                foundPath=true;
+                foundPathUsing=hi;
+                break;
+            }
+        if(!foundPath)
+            break;
+    }
+    return ret;
+}
+```
+위 코드를 수정하여 경로가 없다면 상한값을 늘리고 경로가 있다면 하한값을 늘려나가는 방식의 훑고 지나가는 코드를 작성할 수 있다.  
+```c++
+int scanning() 
+{
+    int lo=0, hi=0, ret=INF;
+    while(lo<weights.size() && hi<weights.size())
+    {
+        if(hasPath(weights[lo],weights[hi]))
+        {
+            ret=min(ret,weights[hi]-weights[lo]);
+            ++lo;
+        }
+        else
+            ++hi;
+    }
+    return ret;
 }
 ```
