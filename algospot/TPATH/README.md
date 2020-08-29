@@ -130,3 +130,33 @@ int scanning()
     return ret;
 }
 ```
+
+---
+hasPath()는 BFS로 구현했다. DFS로 구현해도 상관 없다.  
+```c++
+bool hasPath(int lo, int hi)
+{
+    vector<bool> discoverd(V,false);
+    queue<int> q;
+    discoverd[0]=true;
+    q.push(0);
+    while(!q.empty())
+    {
+        int here=q.front();
+        q.pop();
+        for(int i=0;i<adj[here].size();++i)
+        {
+            int there=adj[here][i].first;
+            int cost=adj[here][i].second;
+            if(!discoverd[there] && lo<=cost && cost<=hi)
+            {
+                if(there==V-1)
+                    return true;
+                discoverd[there]=true;
+                q.push(there);
+            }
+        }
+    }
+    return false;
+}
+```
