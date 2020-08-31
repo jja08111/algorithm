@@ -57,17 +57,7 @@ bool canWinWith(int totalWins)
     // 이미 totalWins승 이상 한 선수가 있으면 안된다. 
     if(*max_element(wins+1, wins+n)>=totalWins)
         return false;
-    // 0번은 소스, 1번은 싱크로 설정
-    V=2+m+n;
-    memset(capacity,0,sizeof(capacity));
-    for(int i=0;i<m;++i)
-    {
-        // 소스에서 각 경기로 가는 간선
-        capacity[0][2+i]=1;
-        // 각 경기에서 선수로 가는 간선
-        for(int j=0;j<2;++j)
-            capacity[2+i][2+m+match[i][j]]=1;
-    }
+    
     // 각 선수에서 싱크로, 가능한 최대 승수를 용량으로 하는 간선을 추가
     for(int i=0;i<n;++i)
     {
@@ -83,6 +73,19 @@ int getMinTotalWins(const int maxAddWin)
 {
     memset(flow,0,sizeof(flow));
     totalFlow=0;
+    
+    // 0번은 소스, 1번은 싱크로 설정
+    V=2+m+n;
+    memset(capacity,0,sizeof(capacity));
+    for(int i=0;i<m;++i)
+    {
+        // 소스에서 각 경기로 가는 간선
+        capacity[0][2+i]=1;
+        // 각 경기에서 선수로 가는 간선
+        for(int j=0;j<2;++j)
+            capacity[2+i][2+m+match[i][j]]=1;
+    }
+    
     for(int i=0;i<=maxAddWin;++i)
         if(canWinWith(i+wins[0]))
             return i+wins[0];
