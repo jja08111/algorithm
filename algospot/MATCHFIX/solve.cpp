@@ -9,7 +9,7 @@ const int MAX_V=2+200+20;
 const int INF=987654321;
 
 int V;
-int n,m;
+int n,m,totalFlow;
 int capacity[MAX_V][MAX_V], flow[MAX_V][MAX_V];
 int wins[20], match[200][2];
 
@@ -47,9 +47,11 @@ int networkFlow(int source, int sink)
         }
         ret+=amount;
     }
-    return ret;
+    // 이전에 계산한 Flow를 포함시켜 반환한다.
+    return totalFlow+=ret;
 }
 
+// 0번 선수가 총 totalWins승으로 우승할 수 있는지 여부를 확인한다.
 bool canWinWith(int totalWins)
 {
     // 이미 totalWins승 이상 한 선수가 있으면 안된다. 
@@ -72,15 +74,18 @@ bool canWinWith(int totalWins)
         int maxWin=(i==0 ? totalWins : totalWins-1);
         capacity[2+m+i][1]=maxWin-wins[i];
     }
+    // 이때 모든 경기에 승자를 지정할 수 있는가?
     return networkFlow(0,1)==m;
 }
 
-int getMinWins()
+// 우승할 수 있는 최소한의 총 승리 횟수 반환
+int getMinTotalWins(const int maxAddWin)
 {
     memset(flow,0,sizeof(flow));
-    for(int i=wins[0];i<=m+wins[0];++i)
-        if(canWinWith(i))
-            return i;
+    totalFlow=0;
+    for(int i=0;i<=maxAddWin;++i)
+        if(canWinWith(i+wins[0]))
+            return i+wins[0];
     return -1;
 }
 
@@ -94,15 +99,19 @@ int main()
         
         for(int i=0;i<n;++i)
             cin>>wins[i];
+        // 0번 선수가 추가로 이길 수 있는 최대 횟수
+        int maxAddWin=0;
         for(int i=0;i<m;++i)
         {
             int a,b;
             cin>>a>>b;
             match[i][0]=a;
             match[i][1]=b;
+            if(a==0 || b==0)
+                ++maxAddWin;
         }
         
-        cout<<getMinWins()<<endl;        
+        cout<<getMinTotalWins(maxAddWin)<<endl;        
     }
     return 0;
 }
