@@ -47,7 +47,6 @@ int networkFlow(int source, int sink)
         }
         ret+=amount;
     }
-    // 이전에 계산한 Flow를 포함시켜 반환한다.
     return ret;
 }
 
