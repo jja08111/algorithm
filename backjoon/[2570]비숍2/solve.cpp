@@ -10,7 +10,7 @@ const int dy[2]={ 1,1};
 
 // A그룹과 B그룹 각각의 크기
 int n,m;
-// true: 빈 칸, fals: 장애물
+// true: 빈 칸, fales: 장애물
 vector<vector<bool> > canPlace;
 vector<vector<int> > adj;
 vector<bool> visited;
