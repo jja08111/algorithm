@@ -1,6 +1,7 @@
 # 해결 
-네트워크 유량에서 이분 매칭으로 푸는 것이 정석이나, (더 느리지만)너비 우선 탐색을 활용한 네트워크 유량 알고리즘을 이용하여 해결 했다.     
+너비 우선 탐색을 이용한 네트워크 유량 알고리즘을 통한 해결과 이분 매칭을 이용한 해결 2가지 방법을 이용해봤다.     
 
+## 1. 에드몬드-카프(Edmonds-Karp) 알고리즘을 통한 해결 
 ### 그래프 모델링 
 각 정점을 소스, 할 수 있는 일의 양, 직원, 일(작업), 싱크로 구분하여 설정했다.  
 
@@ -117,4 +118,97 @@ int main()
     return 0;
 }
 
+```
+--------
+## 2. 이분 매칭을 이용한 해결 
+그룹 A와 그룹 B로 나뉜 네트워크에서 포드-풀커슨 알고리즘을 응용해 증가 경로를 찾은 뒤 유량을 보내는 것을 반복한다.  
+유량을 보내는 것은 A에 속한 a정점과 B에 속한 b정점을 매치하는 것으로 표현한다.  
+이 문제에서는 직원들에게 일을 매칭시키는 것으로 이해할 수 있다.  
+
+그렇다면 벌점은 어떻게 처리해야 하는가?  
+하나의 방법은 각 직원마다 증가 경로가 더이상 존재하지 않을 때 까지 증가 경로가 있는지 찾아 보며, 증가 경로가 존재하면 매칭시키고 결과 값을 증가시키는 것이다.  
+
+이와 같은 방법으로 구현한 1번보다 간단한 코드는 아래와 같으며, 이 방법은 1번 방법보다 공간 복잡도를 9배 줄일 수 있다.  
+```c++
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
+using namespace std;
+
+const int MAX=1001;
+const int INF=987654321;
+
+int n,m,k;
+vector<int> adj[MAX];
+vector<int> bMatch;
+vector<bool> visited;
+
+void makeGraph()
+{
+    cin>>n>>m>>k;
+    for(int i=0;i<MAX;++i)
+        adj[i].clear();
+    for(int person=0;person<n;++person)
+    {
+        int canDoNum;
+        cin>>canDoNum;
+        for(int j=0;j<canDoNum;++j)
+        {
+            int todo;
+            cin>>todo;
+            --todo;
+            adj[person].push_back(todo);
+        }
+    }
+}
+
+bool dfs(int a)
+{
+    if(visited[a])
+        return false;
+    visited[a]=true;
+    for(int i=0;i<adj[a].size();++i)
+    {
+        int b=adj[a][i];
+        if(bMatch[b]==-1 || dfs(bMatch[b]))
+        {
+            bMatch[b]=a;
+            return true;
+        }
+    }
+    return false;
+}
+
+int getMaxNum()
+{
+    bMatch=vector<int>(m,-1);
+    int size=0;
+    for(int start=0;start<n;++start)
+    {
+        visited=vector<bool>(n,false);
+        if(dfs(start))
+            ++size;
+    }
+    for(int start=0;start<n;++start)
+    {
+        while(k)
+        {
+            visited=vector<bool>(n,false);
+            if(!dfs(start))
+                break;
+            ++size;
+            --k;
+        }
+    }
+    return size;
+}
+
+int main()
+{
+    makeGraph();
+    
+    cout<<getMaxNum()<<endl;
+    return 0;
+}
 ```
