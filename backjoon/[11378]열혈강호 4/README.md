@@ -141,6 +141,7 @@ const int INF=987654321;
 
 int n,m,k;
 vector<int> adj[MAX];
+// b와 매칭된 a정점 목록
 vector<int> bMatch;
 vector<bool> visited;
 
@@ -171,6 +172,7 @@ bool dfs(int a)
     for(int i=0;i<adj[a].size();++i)
     {
         int b=adj[a][i];
+        // b가 이미 매칭되어 있다면 bMatch[b]에서부터 시작해 증가 경로를 찾는다.(역방향으로 유량을 보내는 것과 비슷함)
         if(bMatch[b]==-1 || dfs(bMatch[b]))
         {
             bMatch[b]=a;
@@ -195,8 +197,10 @@ int getMaxNum()
         while(k)
         {
             visited=vector<bool>(n,false);
+            // 해당 직원으로는 추가적인 일을 부여할 수 없는 경우
             if(!dfs(start))
                 break;
+            // 일을 부여하고 벌점을 삭감
             ++size;
             --k;
         }
