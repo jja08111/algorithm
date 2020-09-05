@@ -20,7 +20,7 @@
 
 ### 맵 다시 그리기 
 선택된 정점은 이미 구해놓은 id를 이용하여 쉽게 함정을 설치한 보드를 그릴 수 있다.  
-```c+++
+```c++
 #include <iostream>
 #include <vector>
 #include <cstring>
