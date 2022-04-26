@@ -24,12 +24,12 @@ class Solution {
         for (i in course) {
             var beforeOrderMaxCount = 2
             for (j in sortedCountList.indices) {
-                val item = sortedCountList[j].first
+                val order = sortedCountList[j].first
                 val count = sortedCountList[j].second
 
-                if (item.length == i && beforeOrderMaxCount <= count) {
+                if (order.length == i && beforeOrderMaxCount <= count) {
                     beforeOrderMaxCount = count.coerceAtLeast(beforeOrderMaxCount)
-                    answer = answer.plus(item)
+                    answer = answer.plus(order)
                 }
             }
         }
