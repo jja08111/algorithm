@@ -43,7 +43,7 @@ class Solution {
 
         for (order in orders) {
             val part = ""
-            val sortedOrder = order.toCharArray().sorted().joinToString("")
+            val sortedOrder = order.toSortedSet().joinToString("")
 
             for (len in course) {
                 generateCombination(sortedOrder, part, combinations, 0, 0, len)
