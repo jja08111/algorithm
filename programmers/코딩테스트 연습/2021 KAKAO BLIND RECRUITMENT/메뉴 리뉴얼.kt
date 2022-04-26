@@ -2,17 +2,17 @@ class Solution {
     private fun generateCombination(
         total: String,
         part: String,
-        combination: MutableList<String>,
+        countMap: MutableMap<String, Int>,
         start: Int,
         count: Int,
         n: Int,
     ) {
         if (count == n) {
-            combination.add(part)
+            countMap[part] = if (countMap[part] == null) 1 else countMap.getValue(part) + 1  
             return
         }
         for (i in start until total.length) {
-            generateCombination(total, part + total[i], combination, i + 1, count + 1, n)
+            generateCombination(total, part + total[i], countMap, i + 1, count + 1, n)
         }
     }
 
@@ -39,21 +39,16 @@ class Solution {
 
     fun solution(orders: Array<String>, course: IntArray): Array<String> {
         val countMap = mutableMapOf<String, Int>()
-        val combinations = mutableListOf<String>()
 
         for (order in orders) {
             val part = ""
             val sortedOrder = order.toSortedSet().joinToString("")
 
             for (len in course) {
-                generateCombination(sortedOrder, part, combinations, 0, 0, len)
+                generateCombination(sortedOrder, part, countMap, 0, 0, len)
             }
         }
-
-        for (element in combinations) {
-            countMap[element] = if (countMap[element] == null) 1 else countMap.getValue(element) + 1
-        }
-
+        
         return createAnswer(countMap, course)
     }
 }
